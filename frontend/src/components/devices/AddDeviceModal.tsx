@@ -27,7 +27,7 @@ function Connecting({ created }: { created: Created }) {
 }
 
 export function AddDeviceModal({ groups, onClose, onDone }: { groups: Group[]; onClose: () => void; onDone: () => void }) {
-  const [f, setF] = useState({ device_id: '', name: '', group_id: '', connection_type: 'wifi' as ConnectionType, latitude: '', longitude: '' })
+  const [f, setF] = useState({ device_id: '', name: '', group_id: '', connection_type: null as ConnectionType | null })
   const [area, setArea] = useState('')                 // '' | 'zone:<id>' | 'city:<id>'
   const [zones, setZones] = useState<Zone[]>([])
   const [cities, setCities] = useState<City[]>([])
@@ -63,7 +63,7 @@ export function AddDeviceModal({ groups, onClose, onDone }: { groups: Group[]; o
     setPick(a)
     setF((p) => ({
       ...p, name: p.name || a.name, connection_type: a.connection_type ?? p.connection_type,
-      device_id: p.device_id || `DEV-${a.id.slice(0, 6).toUpperCase()}`, latitude: '', longitude: '',
+      device_id: p.device_id || `DEV-${a.id.slice(0, 6).toUpperCase()}`,
     }))
   }
 
@@ -71,8 +71,7 @@ export function AddDeviceModal({ groups, onClose, onDone }: { groups: Group[]; o
     e.preventDefault(); setErr('')
     try {
       const { data } = await api.post('/devices', {
-        device_id: f.device_id, name: f.name, group_id: f.group_id ? +f.group_id : null, connection_type: f.connection_type,
-        latitude: !pick && f.latitude ? +f.latitude : null, longitude: !pick && f.longitude ? +f.longitude : null,
+        device_id: f.device_id, name: f.name, group_id: f.group_id ? +f.group_id : null, connection_type: pick?.connection_type ?? null,
         discovery_id: pick?.id ?? null,
       })
       setCreated(data); onDone()
@@ -89,19 +88,9 @@ export function AddDeviceModal({ groups, onClose, onDone }: { groups: Group[]; o
             <ErrorNote msg={err} />
             <Field label="Device ID" hint="Letters, digits, - and _"><input name="device-id" autoComplete="off" className={inputCls} value={f.device_id} onChange={(e) => setF({ ...f, device_id: e.target.value })} placeholder="DEV-004" required /></Field>
             <Field label="Name"><input name="device-name" autoComplete="off" className={inputCls} value={f.name} onChange={(e) => setF({ ...f, name: e.target.value })} placeholder="Airport lobby screen" required /></Field>
-            <div className="grid grid-cols-2 gap-3">
-              <Field label="Connection type"><select className={inputCls} value={f.connection_type} onChange={(e) => setF({ ...f, connection_type: e.target.value as ConnectionType })}>
-                {(Object.keys(CONNECTION_LABELS) as ConnectionType[]).map((c) => <option key={c} value={c}>{CONNECTION_LABELS[c]}</option>)}</select></Field>
-              <Field label="Group"><select className={inputCls} value={f.group_id} onChange={(e) => setF({ ...f, group_id: e.target.value })}><option value="">None</option>{groups.map((g) => <option key={g.id} value={g.id}>{g.name}</option>)}</select></Field>
-            </div>
-            {!pick && (
-              <div className="grid grid-cols-2 gap-3">
-                <Field label="Initial latitude"><input className={inputCls} inputMode="decimal" value={f.latitude} onChange={(e) => setF({ ...f, latitude: e.target.value })} placeholder="optional" /></Field>
-                <Field label="Initial longitude"><input className={inputCls} inputMode="decimal" value={f.longitude} onChange={(e) => setF({ ...f, longitude: e.target.value })} placeholder="optional" /></Field>
-              </div>
-            )}
+            <Field label="Group"><select className={inputCls} value={f.group_id} onChange={(e) => setF({ ...f, group_id: e.target.value })}><option value="">Auto by location</option>{groups.map((g) => <option key={g.id} value={g.id}>{g.name}</option>)}</select></Field>
             <Button className="mt-1 w-full">{pick ? `Create and connect ${pick.name}` : 'Create device'}</Button>
-            {!pick && <p className="mt-2 text-xs text-ink-400">Without picking a display, you get a registration token to enter on the display yourself.</p>}
+            {!pick && <p className="mt-2 text-xs text-ink-400">Location is detected automatically once the display connects and reports its GPS; its zone is assigned from that. Without picking a display, you get a registration token to enter on the display yourself.</p>}
           </div>
 
           <div className="mt-4 md:mt-0">

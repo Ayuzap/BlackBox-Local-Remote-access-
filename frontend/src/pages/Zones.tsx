@@ -55,16 +55,23 @@ export default function Zones() {
       {mode !== 'none' && (
         <Card title={mode === 'polygon' ? 'Click the map to add corners (min. 3)' : 'Click the map to place the zone centre'}>
           <ErrorNote msg={err} />
-          <div className="grid items-end gap-x-3 md:grid-cols-5">
-            <Field label="Zone name"><input className={inputCls} value={form.name} onChange={(e) => setForm({ ...form, name: e.target.value })} /></Field>
-            <Field label="Priority" hint="Higher wins where zones overlap"><input type="number" className={inputCls} value={form.priority} onChange={(e) => setForm({ ...form, priority: +e.target.value })} /></Field>
-            <Field label="Colour"><input type="color" className="h-9 w-full rounded" value={form.color} onChange={(e) => setForm({ ...form, color: e.target.value })} /></Field>
+          <div className={`grid gap-x-4 gap-y-1 sm:grid-cols-2 ${mode === 'circle' ? 'lg:grid-cols-4' : 'lg:grid-cols-3'}`}>
+            <Field label="Zone name"><input className={inputCls} placeholder="e.g. Connaught Place…" value={form.name} onChange={(e) => setForm({ ...form, name: e.target.value })} /></Field>
+            <Field label="Priority"><input type="number" className={inputCls} value={form.priority} onChange={(e) => setForm({ ...form, priority: +e.target.value })} /></Field>
             {mode === 'circle' && <Field label="Radius (km)"><input type="number" min={1} className={inputCls} value={radius} onChange={(e) => setRadius(+e.target.value)} /></Field>}
-            <div className="mb-3 flex gap-2">
-              <Button disabled={draft.length < 3 || !form.name} onClick={create}>Save zone</Button>
-              {mode === 'polygon' && <Button variant="secondary" onClick={() => setDraft((d) => d.slice(0, -1))}>Undo</Button>}
-              <Button variant="ghost" onClick={cancel}>Cancel</Button>
-            </div>
+            <Field label="Colour">
+              <span className="relative flex h-[38px] items-center gap-2.5 rounded-2xl border border-ink-200 bg-white/80 px-3 focus-within:border-brand-400 focus-within:ring-4 focus-within:ring-brand-100">
+                <span className="size-5 shrink-0 rounded-full ring-2 ring-white shadow" style={{ background: form.color }} aria-hidden="true" />
+                <span className="font-mono text-xs uppercase text-ink-500">{form.color}</span>
+                <input type="color" aria-label="Zone colour" className="absolute inset-0 size-full cursor-pointer opacity-0" value={form.color} onChange={(e) => setForm({ ...form, color: e.target.value })} />
+              </span>
+            </Field>
+          </div>
+          <div className="mt-1 flex flex-wrap items-center gap-2 border-t border-ink-100/70 pt-4">
+            <p className="mr-auto text-xs text-ink-400">Higher priority wins where zones overlap.</p>
+            <Button variant="ghost" onClick={cancel}>Cancel</Button>
+            {mode === 'polygon' && <Button variant="secondary" disabled={!draft.length} onClick={() => setDraft((d) => d.slice(0, -1))}>Undo</Button>}
+            <Button className="whitespace-nowrap" disabled={draft.length < 3 || !form.name} onClick={create}>Save zone</Button>
           </div>
         </Card>
       )}

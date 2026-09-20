@@ -26,6 +26,7 @@ from bootstrap import detect_server, load_dotenv, open_display
 from cache import Cache
 from discovery import discover, load_identity
 from display_server import make_server
+from netinfo import detect_connection_type
 from gps import FixedGPS, GpsdGPS, SimulatedGPS, place_coords
 
 VERSION = "1.1.0"
@@ -191,7 +192,7 @@ class DeviceAgent:
                     pos = self.position
                 payload = {
                     "cpu": psutil.cpu_percent(None), "memory": psutil.virtual_memory().percent,
-                    "network": "connected", "gps": pos is not None, "content_version": ver or "",
+                    "network": "connected", "connection_type": os.getenv("CONNECTION_TYPE") or detect_connection_type(), "gps": pos is not None, "content_version": ver or "",
                     "content_names": names, "software_version": VERSION,
                 }
                 r = self._request("POST", "/device/heartbeat", json=payload)
@@ -369,7 +370,7 @@ def main():
         if identity:
             device_id, token = identity
         else:
-            device_id, token = discover(server, gps, cache_root, VERSION, os.getenv("CONNECTION_TYPE") or None)
+            device_id, token = discover(server, gps, cache_root, VERSION, os.getenv("CONNECTION_TYPE") or detect_connection_type())
     label[0] = device_id
     cache_dir = args.cache_dir or os.path.join(cache_root, device_id)
     DeviceAgent(server, device_id, token, gps, cache_dir).run(

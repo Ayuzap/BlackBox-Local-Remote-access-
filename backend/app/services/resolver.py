@@ -12,7 +12,7 @@ from sqlalchemy.orm import Session
 
 from .. import config
 from ..models import Assignment, Device, Zone
-from .geo import zones_containing
+from .geo import zones_for_device
 
 
 def local_now(now: datetime | None = None) -> datetime:
@@ -37,7 +37,7 @@ def in_window(start: str | None, end: str | None, now: datetime | None = None) -
 
 
 def resolve(db: Session, device: Device, now: datetime | None = None, zones: list[Zone] | None = None) -> dict:
-    hits = zones_containing(device.latitude, device.longitude, db.query(Zone).all() if zones is None else zones)
+    hits = zones_for_device(device, db.query(Zone).all() if zones is None else zones)
     zone_ids = {z.id for z in hits}
     primary = hits[0] if hits else None
 
@@ -67,7 +67,7 @@ def resolve(db: Session, device: Device, now: datetime | None = None, zones: lis
                     "content_id": c.id,
                     "name": c.name,
                     "type": c.type,
-                    "duration": c.duration,
+                    "duration": a.duration or c.duration,
                     "version": c.version,
                     "mime": c.mime,
                     "assignment_id": a.id,

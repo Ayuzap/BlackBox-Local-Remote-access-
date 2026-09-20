@@ -18,6 +18,15 @@ def point_in_polygon(lat: float, lng: float, polygon: list[list[float]]) -> bool
     return inside
 
 
+def zones_for_device(device, zones) -> list:
+    """The zones a device counts as being in: the one an admin pinned it to, otherwise wherever its GPS says."""
+    if device.zone_override_id is not None:
+        pinned = [z for z in zones if z.id == device.zone_override_id]
+        if pinned:
+            return pinned
+    return zones_containing(device.latitude, device.longitude, zones)
+
+
 def zones_containing(lat: float | None, lng: float | None, zones) -> list:
     """All zones containing the point, highest priority first."""
     if lat is None or lng is None:

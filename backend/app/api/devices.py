@@ -4,12 +4,13 @@ from fastapi import APIRouter, Depends, HTTPException
 from sqlalchemy.orm import Session
 
 from ..database import get_db
-from ..models import Assignment, Device, DeviceGroup, DeviceLog, Impression, User
+from ..models import Assignment, Device, DeviceGroup, DeviceLog, Impression, User, Zone
 from ..realtime import announce_changes, notify_admins, notify_devices
 from ..schemas import DeviceIn, DeviceUpdate, GroupIn
 from ..security import current_user, hash_secret, require_admin
 from ..services import discovery
-from ..services.device_service import DEFAULT_CONFIG, add_log, broadcast_device, serialize, update_location
+from ..services.device_service import DEFAULT_CONFIG, add_log, broadcast_device, refresh_zone, serialize, update_location
+from ..services.regions import apply_auto_group
 from ..services.resolver import resolve
 from .deps import get_device_or_404, get_or_404
 
@@ -37,11 +38,14 @@ def create_device(body: DeviceIn, db: Session = Depends(get_db), _: User = Depen
     d = Device(
         device_id=body.device_id, name=body.name, group_id=body.group_id, connection_type=body.connection_type,
         registration_token_hash=hash_secret(token), config=dict(DEFAULT_CONFIG),
+        group_auto=body.group_id is None,
     )
     db.add(d)
     db.flush()
     if body.latitude is not None and body.longitude is not None:
         update_location(db, d, body.latitude, body.longitude)
+    else:
+        apply_auto_group(db, d)
     add_log(db, d.device_id, "register", "Device created by administrator")
     db.commit()
     db.refresh(d)
@@ -65,12 +69,19 @@ def update_device(device_id: str, body: DeviceUpdate, db: Session = Depends(get_
         d.name = body.name
     if body.connection_type is not None:
         d.connection_type = body.connection_type
-    if body.clear_group:
-        d.group_id = None
+    if body.clear_group:                                   # back to Auto: the group follows the device's position
+        d.group_id, d.group_auto = None, True
+        apply_auto_group(db, d)
     elif body.group_id is not None:
         if not db.get(DeviceGroup, body.group_id):
             raise HTTPException(400, "Unknown group")
-        d.group_id = body.group_id
+        d.group_id, d.group_auto = body.group_id, False
+    if body.clear_zone or body.zone_id is not None:        # pin the device to a zone, or go back to following its GPS
+        if body.zone_id is not None and not db.get(Zone, body.zone_id):
+            raise HTTPException(400, "Unknown zone")
+        d.zone_override_id = None if body.clear_zone else body.zone_id
+        refresh_zone(db, d)
+        announce_changes()
     if body.config is not None:
         d.config = body.config.model_dump()
         add_log(db, d.device_id, "config", "Configuration changed remotely")

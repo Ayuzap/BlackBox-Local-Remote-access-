@@ -5,7 +5,8 @@ from sqlalchemy.orm import Session
 from .. import config
 from ..models import Device, DeviceLog, Zone, utcnow
 from ..realtime import hub, notify_admins
-from .geo import zones_containing
+from .geo import zones_for_device
+from .regions import apply_auto_group
 
 DEFAULT_CONFIG = {"heartbeat_interval": 10, "location_interval": 3, "mute": True, "fit": "contain"}
 
@@ -40,11 +41,13 @@ def serialize(device: Device) -> dict:
         "health_reasons": reasons,
         "group_id": device.group_id,
         "group": device.group.name if device.group else None,
+        "group_auto": bool(device.group_auto),
         "latitude": device.latitude,
         "longitude": device.longitude,
         "last_seen": last.isoformat() if last else None,
         "zone_id": device.current_zone_id,
         "zone": device.current_zone.name if device.current_zone else None,
+        "zone_override_id": device.zone_override_id,
         "content_version": device.current_content_version,
         "current_content": device.current_content_names,
         "software_version": device.software_version,
@@ -73,7 +76,12 @@ def touch(db: Session, device: Device) -> None:
 def update_location(db: Session, device: Device, lat: float, lng: float, zones: list[Zone] | None = None) -> None:
     """Store the position and refresh which zone the device is in. Pass `zones` to reuse an already loaded list."""
     device.latitude, device.longitude = lat, lng
-    hits = zones_containing(lat, lng, db.query(Zone).all() if zones is None else zones)
+    apply_auto_group(db, device)
+    refresh_zone(db, device, zones)
+
+
+def refresh_zone(db: Session, device: Device, zones: list[Zone] | None = None) -> None:
+    hits = zones_for_device(device, db.query(Zone).all() if zones is None else zones)
     new_zone = hits[0] if hits else None
     old_id = device.current_zone_id
     new_id = new_zone.id if new_zone else None

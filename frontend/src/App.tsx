@@ -8,6 +8,7 @@ import Login from './pages/Login'
 const Dashboard = lazy(() => import('./pages/Dashboard'))
 const Devices = lazy(() => import('./pages/Devices'))
 const ContentPage = lazy(() => import('./pages/Content'))
+const Ads = lazy(() => import('./pages/Ads'))
 const Zones = lazy(() => import('./pages/Zones'))
 const Schedules = lazy(() => import('./pages/Schedules'))
 const Broadcast = lazy(() => import('./pages/Broadcast'))
@@ -23,6 +24,7 @@ export default function App() {
         <Route path="/" element={<Dashboard />} />
         <Route path="/devices" element={<Devices />} />
         <Route path="/content" element={<ContentPage />} />
+        <Route path="/ads" element={<Ads />} />
         <Route path="/zones" element={<Zones />} />
         <Route path="/schedules" element={<Schedules />} />
         <Route path="/broadcast" element={<Broadcast />} />

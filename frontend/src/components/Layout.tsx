@@ -10,7 +10,7 @@ import { useToast } from './Toasts'
 import { Avatar, PulseDot, Skeleton } from './ui'
 
 const nav: [string, string][] = [
-  ['/', 'Overview'], ['/devices', 'Devices'], ['/content', 'Content'], ['/zones', 'Zones & map'],
+  ['/', 'Overview'], ['/devices', 'Devices'], ['/ads', 'Ads'], ['/content', 'Content'], ['/zones', 'Zones & map'],
   ['/schedules', 'Schedules'], ['/broadcast', 'Broadcast'], ['/emergency', 'Emergency'], ['/monitoring', 'Monitoring'], ['/users', 'Users'],
 ]
 

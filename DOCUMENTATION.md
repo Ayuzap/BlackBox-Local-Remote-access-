@@ -22,6 +22,7 @@ This is the only documentation file. Project context for coding assistants lives
   - [B6. Real-time flow](#b6-real-time-flow)
   - [B7. Public demo over a tunnel](#b7-public-demo-over-a-tunnel)
   - [B8. Live broadcasts, health alerts, city zones, discovery and Firebase sign-in](#b8-live-broadcasts-health-alerts-city-zones-discovery-and-firebase-sign-in)
+  - [B9. Clients, fleet inventory and tamper-proofing](#b9-clients-fleet-inventory-and-tamper-proofing)
 - [Part C: Presenter laptop setup](#part-c-presenter-laptop-setup)
   - [C1. What you need](#c1-what-you-need)
   - [C2. Check your laptop](#c2-check-your-laptop)
@@ -63,6 +64,14 @@ This is the only documentation file. Project context for coding assistants lives
   - [G1. Environment variables](#g1-environment-variables)
   - [G2. API surface](#g2-api-surface)
   - [G3. Ports and files](#g3-ports-and-files)
+- [Part H: Presentation guide: workflow, logic and stack](#part-h-presentation-guide-workflow-logic-and-stack)
+  - [H1. The solution in one minute](#h1-the-solution-in-one-minute)
+  - [H2. Who does what: the workflows](#h2-who-does-what-the-workflows)
+  - [H3. One display's life, end to end](#h3-one-displays-life-end-to-end)
+  - [H4. The logic behind each part](#h4-the-logic-behind-each-part)
+  - [H5. Tech stack and why](#h5-tech-stack-and-why)
+  - [H6. Code map](#h6-code-map)
+  - [H7. Numbers, limits and honest answers](#h7-numbers-limits-and-honest-answers)
 
 ---
 
@@ -190,7 +199,7 @@ geo-signage/
 
 **Tests and checks.** Backend: `cd backend && .venv/bin/pip install -r requirements-dev.txt && .venv/bin/python -m pytest -q` (geofencing, scheduling windows, priority, emergency override, device auth and revocation, offline detection, upload validation, media Range requests, roles, password change, timeline) and `.venv/bin/ruff check app tests`. Frontend: `cd frontend && npm run build` (strict type-check, including unused code, then the production build).
 
-**Known limits of the prototype.** Zone geometry uses ray-casting in Python (no PostGIS; fine for hundreds of zones). Schemas are created with `create_all` (no migrations). Registration tokens are reusable until rotated. Impressions are reported by the display page. The agent's display server is plain HTTP on the device itself.
+**Known limits of the prototype.** Zone geometry uses ray-casting in Python (no PostGIS; fine for hundreds of zones). Schemas are created with `create_all` (no migrations). Registration tokens stay valid until rotated, but a display that has bound its identity key can only re-register with that same key (see [B9](#b9-clients-fleet-inventory-and-tamper-proofing)). Impressions are reported by the display page. The agent's display server is plain HTTP on the device itself.
 
 The full tested / not-tested list is in [Part F](#part-f-questions-and-honesty), section F2.
 
@@ -317,8 +326,16 @@ Eight tables. Foreign keys are shown with arrows.
 | `settings` | Key/value store for values admins change at runtime (currently the health alert threshold). |
 | `users.email`, `users.firebase_uid` | Link a person to their Firebase account. Firebase-only accounts have `password_hash = "!firebase"`, which never verifies. |
 | `users.role = pending` | A signed-in Firebase person who has not been approved yet. Has no access. |
+| `clients` | One customer: name, slug, enrollment key, active flag, optional display limit. |
+| `client_id` (on `users`, `devices`, `content`, `zones`, `device_groups`, `assignments`, `broadcasts`, `alerts`) | The owning client. `NULL` on a user means a platform user. Zone and group names are unique per client. |
+| `devices.os_name`, `os_version`, `os_arch`, `runtime_version`, `capabilities` | What the agent reports about itself (Fleet page). |
+| `devices.public_key`, `key_bound_at`, `hw_fingerprint` | The display's bound identity key and hardware fingerprint. |
+| `devices.code_hash`, `code_baseline`, `tamper_state`, `boot_id`, `restarts` | Code integrity and tamper state (`flagged` until an administrator clears it). |
+| `content.sha256` | Hash of the stored file, signed into each playlist. |
+| `agent_releases` | Trusted builds of the agent (version + code hash). |
+| `tamper_events` | Hash-chained record of tamper detections, per client. |
 
-Unclaimed display agents (see B8) are deliberately **not** in the database: they live in a small in-memory list that expires.
+Details of the client, fleet and tamper columns are in [B9](#b9-clients-fleet-inventory-and-tamper-proofing). Unclaimed display agents (see B8) are deliberately **not** in the database: they live in a small in-memory list that expires.
 
 **Upgrading an old database.** There are no migrations, but `database.sync_schema()` runs at startup and adds any missing tables, columns and
 indexes (additive changes only). It was tested by opening databases created by the previous version, on both SQLite and PostgreSQL: existing data
@@ -466,7 +483,7 @@ stops working immediately. The old token cannot be used to connect again until r
 | Risk | What we did | Still open |
 |---|---|---|
 | Guessable admin password | `ADMIN_PASSWORD` from the environment, plus **Change my password** on the Users page, plus a startup warning if the default is still in place | No password policy beyond a minimum length of 8, and no multi-factor login |
-| Guessable device tokens | `FIXED_DEMO_TOKENS=0` generates random tokens printed once in the log | Tokens are **reusable** until rotated (see limits below) |
+| Guessable device tokens | `FIXED_DEMO_TOKENS=0` generates random tokens printed once in the log | Tokens stay valid until rotated, but a bound display must also sign every request with its private key ([B9](#b9-clients-fleet-inventory-and-tamper-proofing)); older unsigned displays are still accepted unless `DEVICE_AUTH_MODE=required` |
 | Default signing key | `SECRET_KEY` from the environment, plus a startup warning for the built-in default | Changing it logs everyone out; there is no key rotation |
 | Traffic in the clear | The tunnel gives HTTPS and secure WebSockets | The agent's local display page on `localhost` is plain HTTP (never leaves the machine) |
 | Exposed surface | MinIO ports are no longer published; only the web port is tunnelled | The whole admin API is reachable through the tunnel and protected only by login throttling and JWTs |
@@ -640,7 +657,7 @@ Instead of drawing a boundary, pick a city: the boundary is outlined on the map 
 
 | Fact | Detail |
 |---|---|
-| Data | `backend/app/data/cities.json`: 46 major Indian cities, built by `scripts/build_cities.py` |
+| Data | `backend/app/data/cities.json`: 96 major Indian cities (tier 1 and tier 2), built by `scripts/build_cities.py` |
 | Boundaries | **25 have real boundaries from OpenStreetMap** (© OpenStreetMap contributors, ODbL). The other **21 are approximate 15 km circles**, because no reliable city-sized boundary was available; the list marks each as `boundary` or `circle · approx` |
 | Sanity rule | A boundary is accepted only if its area is plausible for a city (20 to 1,600 km²), so district or state polygons are rejected |
 | Behaviour | The new zone gets the name `<City> Zone`, a priority and colour you choose, and every device is re-located immediately |
@@ -667,6 +684,78 @@ If nothing is announcing, the form falls back to the usual registration token. U
 | Add device, list of displays found in Delhi | "A display that is switched on announces itself. You see it here, pick it, and it connects by itself. Nobody types a token." |
 | Login page with Google | "Sign in with Google or email through Firebase. New people wait for approval, so having a Google account is not enough." |
 
+
+### B9. Clients, fleet inventory and tamper-proofing
+
+Three features added together on the `feature/clients-fleet-tamper-proof` branch. All of them are backward compatible: an installation with one client and older displays behaves as before.
+
+#### Multiple clients (full isolation)
+
+A **client** is one customer of the platform. Every device, content item, zone, group, assignment, broadcast and alert belongs to exactly one client, and so does every client user.
+
+| Who | What they see |
+|---|---|
+| **Client user** (admin or viewer with a client) | Only their own client. The `X-Client-Id` header is ignored, so they cannot ask for another one. |
+| **Platform user** (no client) | Every client. The dashboard header has a **Client** switcher: pick one client to work inside it, or **All clients** to look across them. |
+
+Rules that hold everywhere:
+
+- Another client's object answers **404**, never 403, so identifiers cannot be probed. Creating a device with an ID that exists in another client answers the same generic 409 as one in your own.
+- Writes need a concrete client. A platform user on "All clients" gets `400 Select a client first`; if only one client exists it is used implicitly. Clearing a tamper flag and verifying the audit record work from "All clients" because the device names its own client.
+- Zone and group names are unique **per client**, not globally.
+- A display only ever receives its own client's playlist, broadcasts and media (another client's file id answers 404 even with a valid device token).
+- WebSocket events are scoped by client, so a dashboard never receives another client's device updates.
+- **Suspending** a client locks its users out (403) and stops its displays. **Display limit** caps how many displays it may create.
+- **Enrollment key** (`ENROLLMENT_KEY` in a display's `.env`): an unclaimed display that announces itself with the key appears only in that client's *Add device* list. Without a key it lands in an unassigned pool that only platform users see.
+- Upgrading: on first start with the new code, `ensure_default_client` creates a **Default** client and moves every existing row into it; `sync_schema` adds the new columns and turns the old global unique names into per-client ones (verified from the previous version's database on SQLite and PostgreSQL).
+
+Pages: **Clients** (platform only: create, suspend, display limit, enrollment key, "Work in this client"), and a **Belongs to** choice on **Users**.
+
+#### Fleet inventory and compatibility
+
+Each agent reports its **operating system** (macOS, Windows or Linux, with version), **CPU architecture**, **Python runtime**, **agent version** and a list of **capabilities** (for example `signed-requests`) on registration and on every heartbeat. The **Fleet** page shows counts by OS, version, architecture and compatibility (click a count to filter the table) and a table of every display.
+
+- **Minimum-version policy** (per client): *recommended* and *supported* versions. Below supported = **Unsupported**, below recommended = **Update recommended**, no version reported = **Unknown**. Nothing is blocked; the policy only informs.
+- **Old agents keep working.** Every new field is optional on the server; a 1.0 or 1.1 agent registers and syncs exactly as before and shows as "not reported" / "No key (old agent)". This is covered by a test.
+- Deliberately **not** included: over-the-air updates and per-OS installers. Inventory and compatibility only.
+
+#### Tamper-proofing
+
+The goal is that a copied file, a stolen token, a modified cache or a cloned disk cannot silently pass as a genuine display. Response policy is **alert and flag only**: a critical alert appears, the display is marked **Flagged**, and it keeps working. An administrator clears the flag after checking (nothing is revoked automatically, so a false alarm cannot black out a screen).
+
+| Layer | What it does | Where |
+|---|---|---|
+| **Device identity key** | Each display creates an Ed25519 key pair on first start (`.cache/<id>/identity.key`, mode 0600) and sends only the public half. The server **binds** it to the device at first registration; the registration request is itself signed, which proves the display holds the key. | `device/identity.py`, `services/deviceauth.py` |
+| **Signed requests** | Once a key is bound, every request must carry `X-Signature` over `METHOD \n PATH \n TIMESTAMP \n NONCE \n SHA-256(body)`. A copied `.env` or stolen token is useless without the private key. Timestamps must be within 120 s (the agent uses the server's clock, so a wrong laptop clock does not lock it out) and each nonce is accepted once, so a recorded request cannot be replayed. A bound display can never go back to unsigned (no downgrade). | `security.current_device` |
+| **Clone detection** | Registering a bound device with valid credentials but a different key is refused (409) and recorded as `clone_attempt`. Registering it with the same key but a different **hardware fingerprint** (hash of the OS machine id) is recorded as `hw_fingerprint_changed`. To move a display to new hardware, an administrator uses **Revoke and re-issue token**, which also forgets the key and fingerprint. | `api/device_api.py` |
+| **Signed playlists** | The server signs each display's playlist (items with their SHA-256, broadcasts, timestamp, device id) with its own Ed25519 key. The display pins that key at first registration and plays only signed playlists. A compromised tunnel or proxy that terminates TLS cannot change what plays. | `services/manifest.py` |
+| **Media integrity** | Every download is checked against the signed SHA-256 before it enters the cache, and the cache is re-checked every 60 s. A modified file is deleted, re-downloaded and reported (`cache_tampered`, `media_hash_mismatch`). | `device/agent.py` |
+| **Tamper-evident local state** | `state.json` is HMAC-protected with a key derived from the private key; a hand-edited file is discarded and reported (`config_tampered`). | `device/cache.py` |
+| **Code integrity** | The agent hashes its own source files and reports the hash. With **Trusted agent builds** listed (Fleet page; `scripts/make-device-kit.sh` prints the hash of each kit), any other hash is flagged. With none listed, a display is compared with its own first report for that version. The agent also re-hashes itself every 60 s (`code_modified`). | `services/fleet.py` |
+| **Clock and restart checks** | A clock set back more than 2 minutes (`clock_rollback`), a start after an unclean stop (`unexpected_restart`) and five starts in ten minutes (`restart_loop`) are reported. | `device/agent.py` |
+| **Hash-chained record** | Every event is appended with `hash = SHA-256(previous hash + event)`, per client. **Verify record** on the Security page recomputes the chain; editing or deleting any earlier row breaks it and names the first broken event. | `services/tamper.py` |
+
+**Hardening of the display machine itself** (all in the agent unless noted):
+
+- The local display server listens on `127.0.0.1` only (`DISPLAY_BIND=0.0.0.0` to open it, needed in Docker), rejects any request whose `Host` header is not local (stops DNS-rebinding pages), and sends a strict Content-Security-Policy.
+- `/api/control` (the demo panel: cut network, jump GPS) is **off** unless `DEMO_CONTROLS=1`, and even then needs a per-run token. A real display should leave it off.
+- Kiosk mode now starts Chrome/Edge in an incognito profile with dev tools, translate and error dialogs off.
+- The identity key file is mode 0600 on macOS and Linux. On Windows it relies on the user profile's permissions.
+- **Linux kiosk checklist** (not run on real hardware): run the agent as a dedicated unprivileged user; systemd unit with `NoNewPrivileges=yes`, `ProtectSystem=strict`, `ProtectHome=yes`, `PrivateTmp=yes`, `ReadWritePaths=<agent>/.cache`, `Restart=always`; agent folder owned by root and read-only to that user (so code cannot be edited in place); full-disk encryption, locked BIOS/boot order and disabled unused USB ports; auto-login into a kiosk-only session with no other applications.
+
+**What this does not stop.** A person with root on the display can read the private key and act as that display, and can patch the agent before it hashes itself. Software cannot fully defend a machine its owner controls; hardware roots of trust do that (TPM 2.0 or Secure Enclave key storage with remote attestation, Secure Boot, a read-only root file system). This prototype detects and alerts on the common cases and is designed so the key could later move into a TPM without changing the protocol. Also: the server signing key is trusted on first use, so a display set up against a hostile server is not protected; if the server's key changes on purpose, run `./start.sh --reset` on the displays.
+
+**Rollout.** `DEVICE_AUTH_MODE=optional` (default) accepts older unsigned displays and flags them "No key" on Fleet; set `required` once every display runs 1.2.0. Set `SERVER_SIGNING_KEY` (base64 32-byte seed) to keep the same key across database resets; otherwise one is generated and stored in the database.
+
+#### Side by side
+
+| On screen | Say |
+|---|---|
+| Client switcher, then Clients page | "One platform, many customers. Each client sees only their own screens, content and people, and I can jump between them." |
+| Fleet page filtered to one OS | "I can see which laptop or player runs what, and which are behind on the software version." |
+| Copy a display's `.env` to another laptop and start it | "Same credentials, different machine: refused, and it shows up here as a clone attempt." |
+| Edit a cached image, wait a minute | "The screen noticed the file no longer matches what the server signed, deleted it, fetched a good copy, and raised an alert. It never played the bad file." |
+| Security page, Verify record | "The log itself is chained. If someone edits history, this check fails and points at the first altered entry." |
 
 ---
 
@@ -1328,7 +1417,8 @@ A display that stays put shows the same content all the time, for its city's zon
 
 ### D6. Demo controls (press `d`)
 
-Press **`d`** on the display to show a small control panel:
+Press **`d`** on the display to show a small control panel. (The kit's `.env` turns this on with `DEMO_CONTROLS=1`; on a real display leave it out and the panel and its local control endpoint are disabled.)
+
 
 | Button | What it does |
 |---|---|
@@ -1367,6 +1457,7 @@ Press `d` again to hide the panel.
 | Videos play without sound | This is the default. The presenter can switch audio on under *Devices → Remote configuration*. Chrome may also require kiosk mode or one click on the page before it plays sound. |
 | "Address already in use" / port 8101 busy | Another program or another display uses it. Set a different `DISPLAY_PORT` in `.env` and open that port instead. |
 | A page titled "Caution … served through pinggy.io" appears | Only in a browser pointed at the *dashboard's* tunnel address. Click **Enter site** once. The display at `localhost` never shows it. |
+| `This device is already bound to another machine` | The Device ID was already used from a different laptop or a wiped `.cache`, and the server refuses a second identity (it is what stops a copied `.env` working). Ask the presenter to open the device and choose **Revoke and re-issue token**, then run `./start.sh --reset` with the new token. |
 | Two displays flip between online and offline | Two laptops are using the same Device ID. Each laptop needs its own. |
 | My display keeps changing content but should stay put | It was set up as the moving display. Run `./start.sh --reset`, answer **n**, and type its place (or set `GPS_MODE=fixed` and `PLACE=<place>` in `.env`). |
 | The display says `Unknown place '…'` and stops | The place is misspelled. Use one of: chandigarh, delhi, jaipur, mumbai, ahmedabad. |
@@ -1499,7 +1590,7 @@ Use these if you have time. Each one is independent.
 | **How is device health calculated?** | 100 minus penalties: CPU over 60%, memory over 70%, no GPS fix and late heartbeats; offline is 0. Alerts fire below an admin-set threshold (default 50%) and clear 5 points above it. The weights are our own choice and are not tuned on real fleet data. |
 | **Can anyone with a Google account get in?** | No. Firebase proves who someone is; **our** database decides what they can do. New people are `pending` until an admin approves them, unless their verified email is on the admin allow-list. Removing access works immediately, even for a live session. |
 | **How can a new display be found safely?** | Unclaimed displays announce themselves to an unauthenticated endpoint that is capped and short-lived, and expose only a name, rough location and a hash. Credentials go only to the display that holds the matching secret, and only after an admin claims it. |
-| **Are the city boundaries real?** | 25 of 46 are real OpenStreetMap boundaries; the other 21 are approximate 15 km circles and are labelled as such. The builder rejects district-sized matches, so a few big cities fall back to circles. |
+| **Are the city boundaries real?** | 45 of 96 are real OpenStreetMap boundaries; the other 51 are approximate 15 km circles and are labelled as such. The builder rejects district-sized matches, so a few big cities fall back to circles. |
 | **What would you do next?** | (1) PostGIS and a resolved-content cache; (2) boundary hysteresis; (3) single-use, expiring registration tokens and key rotation; (4) migrations; (5) a real GPS and a Raspberry Pi test; (6) remote screenshots and OTA agent updates from the original plan; (7) playlist transitions and per-item scheduling. |
 | **Which planned features did you skip?** | MQTT, remote screenshots, OTA updates, route-based targeting, and PostGIS. Everything in the original "must have" list and most of "should have" is built. |
 
@@ -1534,15 +1625,20 @@ Use these if you have time. Each one is independent.
 | Discovery | A real agent with no identity announced itself, was filtered by city, claimed from the UI, registered on its own, and kept its identity after a restart | Pass |
 | Firebase sign-in | The real Firebase SDK against the **Firebase Auth emulator**: email registration, verification, Google popup, allow-list, approval queue, viewer versus admin (HTTP 403), instant revocation. Plus backend tests with self-signed RS256 tokens (wrong signature, audience, issuer, expiry, unknown key) | Pass |
 | Schema upgrade | A database created by the previous version opened by the new code, on SQLite and PostgreSQL | Pass |
-| Test suite | 45 backend tests, linting, and two browser regressions (21 and 20 steps) | Pass |
+| Test suite | 85 backend tests (the earlier 45 plus the client and tamper suites), linting, and two browser regressions (21 and 20 steps) | Pass |
 | Code reorganisation | 21-step browser regression: every page, creating and deleting a device and a zone through the UI, an emergency alert reaching a live display and clearing again, the page transition; plus 14 backend tests and linting | Pass |
 | Tunnel script | Pinggy start, `url` and `stop` through the rewritten script with a health check through the tunnel; provider auto-selection; ngrok with a wrong token against the real ngrok container | Pass |
+| Multi-client isolation | 19 backend tests (access matrix across every resource, cross-references, per-client names, quota, suspension, enrollment keys, hub scoping); the upgrade of the previous version's database on SQLite and PostgreSQL; the dashboard as a platform admin and as a client admin in headless Chromium (switcher, nav, empty other client) | Pass |
+| Fleet inventory | Backend tests (policy, filters, version compare, old unsigned agent still works) and a real agent reporting macOS, arm64, Python and capabilities into the Fleet page | Pass |
+| Tamper-proofing | 20 backend tests (signature, wrong key, replay, tampered body, clock skew, clone attempt, downgrade, fingerprint, signed playlist, hash chain, code baseline and trusted builds); live agents: a modified cache file was removed, re-downloaded and flagged; a copied identity was refused; a stolen token without the key got 401; an edited `state.json` and a modified source file were both reported; the demo controls, Host check and loopback bind were probed with `curl`; the flag was cleared and the record verified from the dashboard | Pass |
+| Whole suite on PostgreSQL | `TEST_DATABASE_URL=postgresql+psycopg2://... pytest` (found and fixed a client delete that SQLite let through) | 85 pass |
 | Query cost | SQL statements per location update, before and after the refactor | 5 to 4 |
 
 #### Not tested (be careful)
 
 | Area | Status |
 |---|---|
+| **Tamper-proofing on real hardware** | Detections were exercised on one macOS machine. Windows and Linux hardware fingerprints, the Linux kiosk checklist and the systemd hardening were not run. TPM / Secure Boot / attestation are not implemented. A user with root on a display can read its key. |
 | **Multi-laptop use** | The display kit and the tunnel were only verified **from one machine**. No second physical laptop was used. |
 | **Windows** (`start.bat`) | Written, never run. |
 | **Firebase against a real project** | Only the emulator and synthetic tokens were used. Fetching Google's real certificates, Google's real consent screen, real verification emails and the Authorized-domains setting were **not** exercised. Needs your Firebase project. |
@@ -1600,6 +1696,8 @@ Use these if you have time. Each one is independent.
 | `ADMIN_TOKEN_MINUTES`, `DEVICE_TOKEN_DAYS` | `720`, `30` | Login token lifetimes. |
 | `DEFAULT_ADMIN_USER`, `DEFAULT_ADMIN_PASSWORD` | `admin`, `admin123` | Seeded account (Compose maps `ADMIN_PASSWORD` here). |
 | `SEED_DEMO_DATA` | `1` | Seed devices, zones and slides on first start. |
+| `DEVICE_AUTH_MODE` | `optional` | `optional` accepts displays without an identity key (flagged "No key"); `required` refuses them. Displays with a bound key must always sign. |
+| `SERVER_SIGNING_KEY` | generated, stored in the database | Base64 32-byte Ed25519 seed used to sign playlists. Set it to keep the key across database resets. |
 | `MONITOR_INTERVAL_SECONDS` | `5` | How often the offline sweep runs. |
 | `SCHEDULE_TZ_OFFSET_MINUTES` | `330` | Offset (IST) used for `HH:MM` schedule windows. |
 
@@ -1615,6 +1713,9 @@ Use these if you have time. Each one is independent.
 | `ROUTE`, `ROUTE_STEPS`, `ROUTE_DWELL` | `chandigarh,delhi,jaipur,mumbai`, `10`, `5` | Simulated road trip. Places: chandigarh, delhi, jaipur, mumbai, ahmedabad. |
 | `LAT`, `LNG` | `28.6139`, `77.2090` | Exact coordinates for `GPS_MODE=fixed` when `PLACE` is not set. |
 | `OPEN_BROWSER`, `KIOSK` | off | Open the display page; `KIOSK=1` opens Chrome or Edge fullscreen. |
+| `DEMO_CONTROLS` | off | Enables the `d` demo panel and `/api/control`. Leave off on a real display. |
+| `DISPLAY_BIND` | `127.0.0.1` | Interface the local display page listens on (`0.0.0.0` in Docker). |
+| `ENROLLMENT_KEY` | empty | A client's enrollment key, so an unclaimed display appears only in that client's *Add device* list. |
 
 ### G2. API surface
 
@@ -1624,6 +1725,9 @@ Through nginx everything is under `/api`.
 | Area | Endpoints |
 |---|---|
 | Auth | `POST /auth/login`, `POST /auth/logout`, `GET /auth/me`, `GET /auth/config` (public), `POST /auth/firebase` |
+| Clients | `GET/POST /clients`, `PUT/DELETE /clients/{id}`, `POST /clients/{id}/rotate-key` (platform users manage; client users see their own). Send `X-Client-Id` to work inside one client |
+| Fleet | `GET /fleet/inventory`, `PUT /fleet/policy`, `GET/POST /fleet/releases`, `DELETE /fleet/releases/{id}` |
+| Security | `GET /security/events`, `GET /security/status`, `POST /security/audit/verify`, `POST /devices/{id}/tamper/clear` |
 | Users | `GET/POST /users`, `POST /users/me/password`, `PUT /users/{id}/role`, `DELETE /users/{id}` |
 | Devices | `GET/POST /devices`, `GET/PUT/DELETE /devices/{device_id}`, `POST /devices/{id}/rotate-token`, `POST /devices/{id}/sync`, `GET /devices/{id}/logs` |
 | Groups | `GET/POST /groups`, `DELETE /groups/{id}` |
@@ -1636,7 +1740,7 @@ Through nginx everything is under `/api`.
 | Cities | `GET /cities?q=`, `GET /cities/{id}` (with polygon), `POST /cities/{id}/zone` |
 | Discovery | `POST /discovery/announce` (no login), `GET /discovery/agents?zone_id=&city_id=` |
 | Monitoring | `GET /monitoring/overview`, `/monitoring/logs`, `/monitoring/analytics`, `/monitoring/timeline` |
-| Device agent | (heartbeat and location replies also carry the broadcast version; `GET /device/{id}/content` includes `broadcasts`) `POST /device/register`, `/device/heartbeat`, `/device/location`, `/device/impressions`; `GET /device/{id}/configuration`, `/device/{id}/content`, `/device/{id}/media/{content_id}` |
+| Device agent | (heartbeat and location replies also carry the broadcast version; `GET /device/{id}/content` includes `broadcasts`) `POST /device/register`, `/device/heartbeat`, `/device/location`, `/device/impressions`, `/device/tamper` (signed when the display has a key); `GET /device/{id}/configuration`, `/device/{id}/content`, `/device/{id}/media/{content_id}` |
 | Realtime | `WS /ws/admin?token=`, `WS /ws/device/{id}?token=` |
 | Health | `GET /health`; interactive docs at `http://localhost:8000/docs` |
 
@@ -1650,3 +1754,187 @@ Through nginx everything is under `/api`.
 | Secrets | `.env` (never share or commit) |
 | Display kit | `dist/device-kit.zip` |
 | Tunnel state and log | `.tunnel/` |
+
+---
+
+## Part H: Presentation guide: workflow, logic and stack
+
+A self-contained walkthrough for explaining the whole solution: who uses it and how, what happens inside, why it was built this way, and what it is made of.
+Read H1 to H3 to explain *what it does*, H4 to H6 to explain *how it works*, H7 for the numbers and honest limits.
+
+### H1. The solution in one minute
+
+**Problem.** A screen in a bus, a kiosk or a billboard should show different content depending on *where it is*, without anyone touching it, and must keep working when the network drops.
+
+**Idea.** The screen reports its GPS position. The server checks which **zone** (a drawn or city-shaped area on a map) contains that position, decides which **content** belongs there right now, and tells the screen. The screen downloads the files into a local cache and plays from the cache, so losing the internet does not stop playback.
+
+**Three sentences for a judge.** "Content follows location: a screen that drives from Delhi to Mumbai changes its ads by itself. Everything the screen needs is cached on it, so it keeps playing offline and catches up when it reconnects. One platform serves many customers with full isolation, and displays prove their identity with keys so a copied laptop or edited file is caught."
+
+| Piece | Job |
+|---|---|
+| **Display agent** (Python, on each screen) | Reports GPS and health, receives decisions, caches media, serves the kiosk page, signs its requests |
+| **Backend API** (FastAPI) | Decides what plays where, stores everything, pushes changes live, checks identities |
+| **Dashboard** (React) | Where admins manage clients, displays, content, zones, schedules, broadcasts, alerts, fleet and security |
+| **Database + storage** | PostgreSQL (SQLite locally) for records; MinIO (or local disk) for images and videos |
+
+### H2. Who does what: the workflows
+
+There are four kinds of people. The first two use the dashboard; the last two are around the screens.
+
+| Role | Who they are | Can |
+|---|---|---|
+| **Platform admin** | Runs the whole service (no client of their own) | Everything, across all clients; creates clients; switches between them |
+| **Client admin** | Administrator at one customer | Everything inside their own client only |
+| **Client viewer** | Staff who just watch | Read-only inside their client |
+| **Display operator** | Person who sets up a screen | Starts the agent; never touches the dashboard |
+
+#### H2.1 Admin workflow (dashboard)
+
+1. **Sign in** with the built-in login, or Google / email through Firebase. A new Firebase person is *pending* until an admin gives them a role (Users page), so having a Google account is not enough.
+2. **Platform admin only: create a client** (Clients page), optionally with a display limit, and create that client's first admin (Users, *Belongs to*). Use the **Client** switcher in the header to work inside one client.
+3. **Add a display** (Devices, *Add device*). Either pick a display that is already announcing itself nearby (it connects by itself), or create a Device ID and hand its one-time registration token to the operator.
+4. **Upload content** (Content): JPG, PNG, MP4 or WebM. The server checks the file's real type, stores it, and records its SHA-256 hash.
+5. **Create zones** (Zones & map): draw a polygon on the map, or pick a city and use its real boundary in one click.
+6. **Assign content** (Schedules): choose content, a zone and/or a device group, a priority, and an optional daily time window (may cross midnight). Anything not tied to a zone is the default.
+7. **Watch** (Overview, Monitoring): live map, online/offline, per-display **health bar**, what each display is playing now, uptime and play counts.
+8. **React**: send a **Broadcast** (ticker, banner or fullscreen message to a zone, group or one display, with optional expiry) or trigger an **Emergency** override that beats everything else.
+9. **Alerts**: a toast and the bell tell you when a display goes offline or its health drops below the threshold (default 50), and when it recovers.
+10. **Fleet**: see which OS and agent version every display runs and which are behind your minimum-version policy.
+11. **Security**: see tamper events, clear a flag after checking a display, and press **Verify record** to prove the log has not been edited.
+
+#### H2.2 Display-operator workflow (the screen)
+
+1. Unzip the display kit and run `./start.sh` (or `start.bat`). It asks for the server URL and either the Device ID and token, or nothing (discovery).
+2. The agent creates its private key, registers, downloads the playlist and opens the display page.
+3. From then on it runs by itself: content changes as the GPS position changes, and it survives network loss. Press `d` for the demo panel (only when `DEMO_CONTROLS=1`).
+
+#### H2.3 What the audience sees
+
+A screen playing its content, a small status pill (*ONLINE - live* or *OFFLINE - playing cached content*), and any broadcast overlay or emergency banner the admin sends.
+
+### H3. One display's life, end to end
+
+```
+ display starts ─► registers (signed) ─► server binds its key, hands back the server's signing key
+        │
+        ▼
+ every 3 s:  POST /device/location ──► server finds the zone ──► resolves content ──► replies with a short "manifest_version" hash
+        │                                                                     │
+        │            hash unchanged ──► nothing to do                         │
+        │            hash changed   ──► GET /device/{id}/content (signed playlist)
+        ▼
+ verify signature ─► download missing files ─► check each SHA-256 ─► cache ─► kiosk page plays from the cache
+        │
+        ▼
+ every 10 s: heartbeat (CPU, memory, GPS, OS, version, code hash) ─► server updates health, alerts, dashboard
+ admin edits anything ──► server pushes {"type":"sync"} over WebSocket ──► the display refetches within a second
+ network dies ──► keeps playing the cache; on reconnect it syncs and reports what it missed
+```
+
+### H4. The logic behind each part
+
+Each item: **what it does, how, and where the code is.**
+
+**Geofencing** (`services/geo.py`). A zone is a polygon of `[lat, lng]` points. The server uses **ray casting**: draw a ray from the point and count how many polygon edges it crosses; odd means inside. It is simple, needs no GIS database, and is fast enough for hundreds of zones (the limit we state). If several zones contain the point, the higher priority wins.
+
+**Content resolution** (`services/resolver.py`). Candidates are the assignments that match the display's zone or group and whose time window is active now. Ranking: **emergency > assignment priority > specificity** (zone plus group beats one of them beats the global default). Exact ties play together as a playlist. Priority beats specificity on purpose so an admin can always override with a number. Time windows use a fixed offset (IST by default) and may cross midnight.
+
+**The manifest hash.** The resolver output is boiled down to a short hash (content ids, versions, durations, plus the set of live broadcasts). Every location and heartbeat reply carries it. The display compares it to the last one and only refetches the playlist when it changed. This keeps traffic tiny and makes a missed push self-heal, because the next reply shows the difference.
+
+**Realtime** (`realtime.py`, `api/ws.py`). An in-memory hub holds the dashboards' and displays' WebSockets. Changes call `notify_admins` / `notify_devices`; sync endpoints run in worker threads and bridge into the async hub. Displays also poll every 5 s, so push is an optimisation, not a dependency. The hub is per client, so one client's dashboard never receives another's events. (Limit: one process.)
+
+**Offline behaviour** (`device/cache.py`, `display_server.py`). Files are cached as `<content>-v<version>.<ext>`, and the last playlist is saved. The kiosk page is served by a tiny local HTTP server on the display, so playing never touches the network. The server marks a display offline when no heartbeat has arrived for 30 s and logs it, which also feeds uptime.
+
+**Health score and alerts** (`services/health.py`). Score 0-100 starts at 100 and loses points for high CPU, high memory, no GPS fix and a late heartbeat; an offline display is 0. Every 5 s the monitor raises an alert when a display drops below the threshold and resolves it a little above (hysteresis, so it does not flap). Alerts are in-dashboard only.
+
+**Broadcasts** (`services/broadcasts.py`). Text overlays targeted by zone, group or device with an optional expiry. They ride the same sync path: the manifest hash includes the set of live broadcasts, so starting, ending or expiring one is noticed on the next reply. The display page ignores the hash for restarting playback, so a broadcast does not restart the ads.
+
+**City zones** (`data/cities.json`). 96 cities: 45 with real OpenStreetMap boundaries and 51 approximated by a 15 km circle. One click creates a zone and re-locates displays.
+
+**Discovery** (`services/discovery.py`). A display with no identity announces itself to a small in-memory, expiring list. The admin picks it in *Add device*; the server creates the device and hands the credentials to that display on its next announcement, so nobody types a token. An **enrollment key** ties an announcing display to one client.
+
+**Authentication** (`security.py`, `api/auth.py`, `services/firebase.py`). Two realms. Admins: signed JWT (12 h), Argon2 password hashes, roles, five failed logins a minute then HTTP 429; or Firebase, verified by the server itself against Google's certificates and exchanged for our normal JWT so nothing else changes. Displays: their own JWT (30 days) checked against a per-device `token_version`; "Revoke and re-issue token" bumps it and every old credential dies instantly.
+
+**Multi-client isolation** (`scope.py`, `api/clients.py`). Every resource carries a `client_id`. For each request a `Scope` is resolved: client users are pinned to their own client and cannot choose another; platform users may send `X-Client-Id`. Reads go through `scoped()` helpers; writes need a concrete client. Another client's object returns **404 rather than 403** so nobody can tell whether an ID exists. Names are unique per client. A suspended client is locked out (users and displays). Displays only ever receive their own client's playlist, broadcasts and media.
+
+**Fleet inventory** (`services/fleet.py`, `services/versions.py`). Agents report OS, version, architecture, runtime, agent version and capabilities. All fields are optional on the server, so old agents still work. A per-client policy classifies each display as up to date, update recommended, unsupported or unknown. Informational only; no forced updates.
+
+**Tamper-proofing** (`services/deviceauth.py`, `manifest.py`, `tamper.py`; agent `device/identity.py`). Think of it in layers:
+
+| Threat | Defence |
+|---|---|
+| Someone copies a display's `.env` or token | Private key never leaves the machine; every request is signed with it; the server binds the key at first registration and refuses a different one (`clone_attempt`) |
+| Someone records and replays a request | 120-second timestamp window plus a one-time nonce |
+| A proxy or tunnel changes what plays | The server signs each playlist; displays pin the server key and play only signed content |
+| Someone edits a cached image | Every file has a signed SHA-256; checked at download and every 60 s; bad file deleted, re-fetched, reported |
+| Someone edits the agent's code or saved state | Code hash reported and compared with trusted builds (or the display's own baseline); saved state is HMAC-protected |
+| Disk image moved to other hardware | Hardware fingerprint change is recorded |
+| Someone rewrites the log | Events are hash-chained; **Verify record** finds the first altered entry |
+
+The response is **alert and flag only**: a critical alert appears and the display is marked *Flagged*, but it keeps playing until an admin clears it, so a false alarm can never black out a screen. On the machine itself the local page listens on localhost only, checks the Host header and protects the demo controls with a token.
+
+### H5. Tech stack and why
+
+| Layer | Technology | Why it was chosen |
+|---|---|---|
+| Backend | **Python, FastAPI, SQLAlchemy** | Fast to build, typed request validation, automatic API docs at `/docs`, WebSocket support built in |
+| Database | **PostgreSQL** (Docker) / **SQLite** (local) | Real database in production, zero setup for development; same code for both |
+| Media storage | **MinIO** (S3-compatible) or local disk | Files stay out of the database; swap to any S3 later. Always streamed through the API with Range support, so every read is authenticated |
+| Dashboard | **React 19, TypeScript, Tailwind v4, Vite** | Typed UI, fast builds; pages are lazy-loaded chunks |
+| Maps | **Leaflet / react-leaflet + OpenStreetMap** | Free, no API key, polygon drawing and city outlines |
+| Animation | **Motion** | Page transitions, respecting reduced-motion settings |
+| Display agent | **Python** (`requests`, `websocket-client`, `psutil`, `cryptography`) | Runs on macOS, Windows and Linux with one small dependency list |
+| Display page | Plain **HTML/JS** served locally | No build step; plays from the cache |
+| Crypto | **Ed25519** signatures, **SHA-256**, **HMAC**, **Argon2**, **JWT (HS256)** | Small, modern, well-reviewed primitives |
+| Auth | Built-in login + **Firebase** (Google, email) | Gives judges a familiar sign-in; server verifies tokens itself |
+| Packaging | **Docker Compose**, nginx | One command runs Postgres, MinIO, backend and dashboard; nginx also proxies `/api` and WebSockets |
+| Public demo | **Cloudflare / ngrok / Pinggy** tunnel via `tunnel.sh` | Lets displays on other networks reach the presenter's laptop |
+| Tests | **pytest** (85 tests, also on PostgreSQL), **ruff**, headless **Playwright** | Logic, isolation and tamper scenarios are covered |
+
+### H6. Code map
+
+```
+backend/app/
+  main.py            app start, routers, startup upgrade + seed
+  models.py          all tables (clients, devices, zones, content, assignments, alerts, tamper_events ...)
+  scope.py           who may see which client (the isolation rules)
+  security.py        admin/device tokens, signature check on device requests
+  realtime.py        WebSocket hub
+  api/               one router per area: devices, content, zones, assignments, broadcasts, alerts,
+                     clients, fleet (+ security), device_api (what agents call), discovery, auth, users
+  services/          geo, resolver, health, broadcasts, discovery, deviceauth, manifest, tamper, fleet, versions, media
+device/              agent.py (loops), identity.py (keys, hashes), cache.py, display_server.py, display/index.html
+frontend/src/        pages/ (Overview, Devices, Content, Zones, Schedules, Broadcast, Emergency, Monitoring,
+                     Fleet, Security, Clients, Users), components/, hooks/, services/api.ts
+simulator/           starts several agents with simulated GPS for demos
+scripts/             tunnel.sh (public URL), make-device-kit.sh (display zip + trusted code hash)
+```
+
+### H7. Numbers, limits and honest answers
+
+| Fact | Value |
+|---|---|
+| Location report / heartbeat / fallback poll | every 3 s / 10 s / 5 s |
+| Offline after | 30 s without a heartbeat (45 s on the tunnel setup) |
+| Push to display | within about a second |
+| Alert threshold | 50, resolves at 55 (adjustable) |
+| Admin / device token life | 12 hours / 30 days |
+| Request signature window | 120 seconds, each nonce once |
+| Cache re-check | every 60 seconds |
+| Cities available | 96 (45 real boundaries) |
+| Backend tests | 85, all passing on SQLite and PostgreSQL |
+
+**Say plainly when asked.**
+- Position comes from a simulated GPS on laptops; real GPS is supported through gpsd but was not tested on hardware.
+- Tamper-proofing detects and alerts; it does not stop someone with root on the display from reading its key. Hardware roots of trust (TPM, Secure Boot, attestation) are the next step and are not built.
+- Zone matching is Python ray casting, not PostGIS; fine for hundreds of zones, not millions.
+- The live hub, discovery list and nonce cache live in one process's memory; scaling out needs Redis or similar.
+- Alerts are in-dashboard only (no email or SMS); no live video streaming; no over-the-air updates.
+- Not tested: multiple physical laptops, Windows, real Firebase project, kiosk mode. The complete list is [F2](#f2-what-was-tested-and-what-was-not).
+
+**Likely questions, short answers.**
+- *What if the internet drops?* The display plays its cache and catches up on reconnect.
+- *What if two clients use the same names?* Allowed; names are unique per client and data never crosses clients.
+- *What if a display is stolen?* Revoke its token: its credentials die at once. A cloned copy cannot register because the server already holds the original's key.
+- *How do you know content was not swapped?* Each file's hash is signed by the server and checked before and while it is cached.
+- *How would it scale?* Postgres and MinIO already scale; move the hub and caches to Redis, add PostGIS for zone lookups, and run several API processes.

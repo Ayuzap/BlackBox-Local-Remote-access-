@@ -1,9 +1,7 @@
 import { useCallback, useEffect, useState } from 'react'
 import { api, errMsg, isAdmin } from '../../services/api'
-import type { Device, Group, LogEntry } from '../../types'
+import type { Device, Group, LogEntry, Zone } from '../../types'
 import { useLive } from '../../hooks/useLive'
-import { CONNECTION_LABELS } from '../../types'
-import type { ConnectionType } from '../../types'
 import { useHealthThreshold } from '../../hooks/useHealthThreshold'
 import { HealthBar } from '../HealthBar'
 import { ago, Badge, Button, Empty, Field, inputCls, Modal, StatusBadge } from '../ui'
@@ -15,7 +13,8 @@ export function DeviceDetailModal({ id, groups, onClose, onChanged }: { id: stri
   const [cfg, setCfg] = useState<Device['config'] | null>(null)
   const [name, setName] = useState('')
   const [group, setGroup] = useState('')
-  const [conn, setConn] = useState<ConnectionType | ''>('')
+  const [zone, setZone] = useState<string | null>(null)   // null = not touched yet; '' = follow GPS
+  const [zones, setZones] = useState<Zone[]>([])
   const [threshold] = useHealthThreshold()
   const [msg, setMsg] = useState('')
   const [token, setToken] = useState('')
@@ -24,14 +23,15 @@ export function DeviceDetailModal({ id, groups, onClose, onChanged }: { id: stri
   const load = useCallback(async () => {
     const [dev, lg] = await Promise.all([api.get(`/devices/${id}`), api.get(`/devices/${id}/logs?limit=15`)])
     setD(dev.data); setLogs(lg.data)
-    setCfg((c) => c ?? dev.data.config); setName((n) => n || dev.data.name); setGroup((g) => (g === '' && dev.data.group_id ? String(dev.data.group_id) : g)); setConn((c) => c || dev.data.connection_type || '')
+    setZone((z) => z ?? (dev.data.zone_override_id ? String(dev.data.zone_override_id) : ''))
+    setCfg((c) => c ?? dev.data.config); setName((n) => n || dev.data.name); setGroup((g) => (g === '' && !dev.data.group_auto && dev.data.group_id ? String(dev.data.group_id) : g))
   }, [id])
-  useEffect(() => { load() }, [load])
+  useEffect(() => { load(); api.get('/zones').then((r) => setZones(r.data)) }, [load])
   useLive((e) => { if (e.event === 'device_update' && e.device.device_id === id) load() })
 
   const save = async () => {
     try {
-      await api.put(`/devices/${id}`, { name, config: cfg, group_id: group ? +group : null, clear_group: !group, connection_type: conn || null })
+      await api.put(`/devices/${id}`, { name, config: cfg, group_id: group ? +group : null, clear_group: !group, zone_id: zone ? +zone : null, clear_zone: !zone })
       setMsg('Saved — pushed to the device'); onChanged(); load()
     } catch (e) { setMsg(errMsg(e)) }
   }
@@ -57,8 +57,8 @@ export function DeviceDetailModal({ id, groups, onClose, onChanged }: { id: stri
         <div>
           <h4 className="mb-2 font-semibold">Remote configuration</h4>
           <Field label="Name"><input disabled={!admin} className={inputCls} value={name} onChange={(e) => setName(e.target.value)} /></Field>
-          <Field label="Connection type"><select disabled={!admin} className={inputCls} value={conn} onChange={(e) => setConn(e.target.value as ConnectionType | '')}><option value="">Not set</option>{(Object.keys(CONNECTION_LABELS) as ConnectionType[]).map((c) => <option key={c} value={c}>{CONNECTION_LABELS[c]}</option>)}</select></Field>
-          <Field label="Group"><select disabled={!admin} className={inputCls} value={group} onChange={(e) => setGroup(e.target.value)}><option value="">— none —</option>{groups.map((g) => <option key={g.id} value={g.id}>{g.name}</option>)}</select></Field>
+          <Field label="Zone" hint={zone ? 'Pinned: plays this zone’s ads wherever it is.' : 'Follows the GPS position.'}><select disabled={!admin} className={inputCls} value={zone ?? ''} onChange={(e) => setZone(e.target.value)}><option value="">{`Auto by location${!d.zone_override_id && d.zone ? ` (${d.zone})` : ''}`}</option>{zones.map((z) => <option key={z.id} value={z.id}>{z.name}</option>)}</select></Field>
+          <Field label="Group"><select disabled={!admin} className={inputCls} value={group} onChange={(e) => setGroup(e.target.value)}><option value="">{d.group_auto && d.group ? `Auto by location (${d.group})` : 'Auto by location'}</option>{groups.map((g) => <option key={g.id} value={g.id}>{g.name}</option>)}</select></Field>
           <div className="grid grid-cols-2 gap-3">
             <Field label="Heartbeat (s)"><input disabled={!admin} type="number" min={2} className={inputCls} value={cfg.heartbeat_interval} onChange={(e) => setCfg({ ...cfg, heartbeat_interval: +e.target.value })} /></Field>
             <Field label="GPS report (s)"><input disabled={!admin} type="number" min={1} className={inputCls} value={cfg.location_interval} onChange={(e) => setCfg({ ...cfg, location_interval: +e.target.value })} /></Field>

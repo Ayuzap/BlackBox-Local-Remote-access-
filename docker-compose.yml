@@ -31,6 +31,8 @@ services:
       OFFLINE_THRESHOLD_SECONDS: ${OFFLINE_THRESHOLD_SECONDS:-30}
       # 1 = seeded devices use DEMO-REG-00x (needed by the `sim` profile); 0 = random tokens printed in the backend log
       FIXED_DEMO_TOKENS: ${FIXED_DEMO_TOKENS:-1}
+      # 0 = start empty (admin user only): no demo devices, zones, groups or content
+      SEED_DEMO_DATA: ${SEED_DEMO_DATA:-1}
       HEALTH_ALERT_THRESHOLD: ${HEALTH_ALERT_THRESHOLD:-50}
       # Firebase sign-in is optional: leave FIREBASE_PROJECT_ID empty to use the built-in login only
       FIREBASE_PROJECT_ID: ${FIREBASE_PROJECT_ID:-}

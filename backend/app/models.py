@@ -65,6 +65,7 @@ class Assignment(Base):
     start_time: Mapped[str | None] = mapped_column(String(5), nullable=True)  # "HH:MM"
     end_time: Mapped[str | None] = mapped_column(String(5), nullable=True)
     priority: Mapped[int] = mapped_column(Integer, default=0)
+    duration: Mapped[int | None] = mapped_column(Integer, nullable=True)  # seconds on screen in this zone; None = the ad's own
     is_emergency: Mapped[bool] = mapped_column(Boolean, default=False)
     active: Mapped[bool] = mapped_column(Boolean, default=True)
     created_at: Mapped[datetime] = mapped_column(DateTime(timezone=True), default=utcnow)
@@ -83,6 +84,8 @@ class Device(Base):
     registration_token_hash: Mapped[str] = mapped_column(String(255))
     token_version: Mapped[int] = mapped_column(Integer, default=0)  # bump to revoke issued JWTs
     registered_at: Mapped[datetime | None] = mapped_column(DateTime(timezone=True), nullable=True)
+    zone_override_id: Mapped[int | None] = mapped_column(Integer, nullable=True)  # zone an admin pinned the device to; None = follow GPS
+    group_auto: Mapped[bool | None] = mapped_column(Boolean, default=False)  # True: group follows the GPS region, not an admin choice
     connection_type: Mapped[str | None] = mapped_column(String(16), nullable=True)  # wifi|ethernet|cellular_4g|cellular_5g|other
 
     status: Mapped[str] = mapped_column(String(16), default="offline")  # online | offline

@@ -116,6 +116,6 @@ def seed(db: Session) -> None:
             token = "-".join(secrets.token_hex(2).upper() for _ in range(3))
             log.warning("Registration token for %s: %s", did, token)  # shown once; rotate in the dashboard if lost
         db.add(Device(device_id=did, name=name, group_id=group.id, registration_token_hash=hash_secret(token),
-                      connection_type=connection, config=dict(DEFAULT_CONFIG)))
+                      connection_type=connection, config=dict(DEFAULT_CONFIG), group_auto=True))
     db.commit()
     log.info("Seeded demo data (3 devices, 3 zones, 5 content items)")

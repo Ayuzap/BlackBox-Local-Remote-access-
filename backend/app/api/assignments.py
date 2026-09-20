@@ -18,6 +18,7 @@ def _out(a: Assignment) -> dict:
         "zone_id": a.zone_id, "zone_name": a.zone.name if a.zone else None,
         "group_id": a.group_id, "group_name": a.group.name if a.group else None,
         "start_time": a.start_time, "end_time": a.end_time, "priority": a.priority,
+        "duration": a.duration, "content_duration": a.content.duration,
         "is_emergency": a.is_emergency, "active": a.active, "created_at": a.created_at,
     }
 

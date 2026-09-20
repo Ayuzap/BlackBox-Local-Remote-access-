@@ -77,6 +77,8 @@ class DeviceUpdate(BaseModel):
     name: str | None = Field(None, min_length=1, max_length=100)
     group_id: int | None = None
     clear_group: bool = False
+    zone_id: int | None = None
+    clear_zone: bool = False
     connection_type: ConnectionType | None = None
     config: DeviceConfig | None = None
 
@@ -97,6 +99,7 @@ class HeartbeatIn(BaseModel):
     cpu: float | None = Field(None, ge=0, le=100)
     memory: float | None = Field(None, ge=0, le=100)
     network: str | None = None
+    connection_type: ConnectionType | None = None   # detected by the agent
     gps: bool | None = None
     content_version: str | None = None
     content_names: str | None = None
@@ -148,6 +151,7 @@ class AssignmentIn(BaseModel):
     start_time: str | None = None
     end_time: str | None = None
     priority: int = Field(0, ge=0, le=1000)
+    duration: int | None = Field(None, ge=1, le=3600)
     is_emergency: bool = False
     active: bool = True
 

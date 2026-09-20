@@ -7,6 +7,7 @@ from fastapi.middleware.cors import CORSMiddleware
 
 from . import config
 from .api import (
+    ads,
     alerts,
     assignments,
     auth,
@@ -47,7 +48,7 @@ app = FastAPI(title="Geo Signage API", version="1.1.0", lifespan=lifespan)
 app.add_middleware(CORSMiddleware, allow_origins=["*"], allow_methods=["*"], allow_headers=["*"])
 
 for router in (auth.router, users.router, devices.router, device_api.router, content.router, zones.router,
-               assignments.router, monitoring.router, broadcasts.router, alerts.router, cities.router, discovery.router, ws.router):
+               assignments.router, monitoring.router, broadcasts.router, alerts.router, ads.router, cities.router, discovery.router, ws.router):
     app.include_router(router)
 
 

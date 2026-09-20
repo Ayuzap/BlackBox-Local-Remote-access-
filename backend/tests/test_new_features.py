@@ -273,3 +273,31 @@ def test_announce_is_validated_and_bounded(client, fresh_discovery, monkeypatch)
     assert _announce(client, secret="b" * 32).status_code == 200
     assert _announce(client, secret="c" * 32).status_code == 429            # unauthenticated endpoint: memory is capped
     assert _announce(client, secret="a" * 32).status_code == 200            # an already-known agent can still refresh itself
+
+
+def test_region_for_groups_by_compass():
+    from app.services.regions import region_for
+    assert region_for(28.6, 77.2) == "North India"
+    assert region_for(19.07, 72.87) == "West India"
+    assert region_for(12.97, 77.59) == "South India"
+    assert region_for(22.57, 88.36) == "East India"
+    assert region_for(26.14, 91.73) == "North East India"
+    assert region_for(21.14, 79.08) == "Central India"
+    assert region_for(51.5, 0.0) is None
+
+
+def test_ads_upload_assign_and_zone_duration(client, admin):
+    import io
+
+    from PIL import Image
+    z = client.post("/zones", json={"name": "AdZ", "polygon": [[0, 0], [0, 1], [1, 1], [1, 0]], "priority": 5}, headers=admin).json()
+    assert client.get("/settings/ads", headers=admin).json()["default_duration"] == 10
+    buf = io.BytesIO()
+    Image.new("RGB", (4, 4), "red").save(buf, "PNG")
+    up = client.post("/content/upload", headers=admin, files={"file": ("a.png", buf.getvalue(), "image/png")}, data={"zone_ids": str(z["id"])})
+    assert up.status_code == 201 and up.json()["duration"] == 10
+    a = [x for x in client.get("/assignments", headers=admin).json() if x["zone_id"] == z["id"]]
+    assert len(a) == 1 and a[0]["priority"] == 10
+    dup = client.post("/ads/assign", json={"content_id": up.json()["id"], "zone_id": z["id"]}, headers=admin)
+    assert dup.status_code == 409
+    assert client.put("/settings/ads", json={"seconds": 15}, headers=admin).json()["default_duration"] == 15

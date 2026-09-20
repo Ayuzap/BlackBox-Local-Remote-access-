@@ -1,11 +1,12 @@
-from fastapi import APIRouter, Depends, File, Form, Request, UploadFile
+from fastapi import APIRouter, Depends, File, Form, HTTPException, Request, UploadFile
 from sqlalchemy.orm import Session
 
 from ..database import get_db
-from ..models import Assignment, Content, User, utcnow
+from ..models import Assignment, Content, User, Zone, utcnow
 from ..realtime import announce_changes, notify_devices
 from ..schemas import ContentUpdate
 from ..security import current_user, current_user_or_query, require_admin
+from ..services.ads import assign_ad, default_duration
 from ..services.media import save_upload, stream_content
 from ..storage import get_storage
 from .deps import get_or_404
@@ -18,19 +19,35 @@ def _out(c: Content) -> dict:
             "duration": c.duration, "version": c.version, "created_at": c.created_at, "updated_at": c.updated_at}
 
 
+def _zone_targets(db: Session, raw: str) -> list[int | None]:
+    out: list[int | None] = []
+    for part in filter(None, (p.strip() for p in raw.split(","))):
+        if part == "all":
+            out.append(None)
+        elif part.isdigit() and db.get(Zone, int(part)):
+            out.append(int(part))
+        else:
+            raise HTTPException(400, f"Unknown zone: {part}")
+    return out
+
+
 @router.get("")
 def list_content(db: Session = Depends(get_db), _: User = Depends(current_user)):
     return [_out(c) for c in db.query(Content).order_by(Content.id.desc())]
 
 
 @router.post("/upload", status_code=201)
-async def upload(file: UploadFile = File(...), name: str = Form(""), duration: int = Form(10),
+async def upload(file: UploadFile = File(...), name: str = Form(""), duration: int | None = Form(None), zone_ids: str = Form(""),
                  db: Session = Depends(get_db), _: User = Depends(require_admin)):
     saved = await save_upload(file)
     c = Content(name=(name or file.filename or "Untitled")[:200], type=saved["type"], storage_key=saved["key"],
-                mime=saved["mime"], size=saved["size"], duration=max(1, min(duration, 3600)))
+                mime=saved["mime"], size=saved["size"], duration=max(1, min(duration or default_duration(db), 3600)))
     db.add(c)
+    db.flush()
+    for z in _zone_targets(db, zone_ids):     # "all" = everywhere; otherwise a comma list of zone ids
+        assign_ad(db, c.id, z)
     db.commit()
+    announce_changes()
     return _out(c)
 
 

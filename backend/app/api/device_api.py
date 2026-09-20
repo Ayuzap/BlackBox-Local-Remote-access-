@@ -64,7 +64,7 @@ def register(body: RegisterIn, db: Session = Depends(get_db)):
 @router.post("/heartbeat")
 def heartbeat(body: HeartbeatIn, db: Session = Depends(get_db), device: Device = Depends(current_device)):
     touch(db, device)
-    for field in ("cpu", "memory", "network", "software_version"):
+    for field in ("cpu", "memory", "network", "software_version", "connection_type"):
         v = getattr(body, field)
         if v is not None:
             setattr(device, field, v)
