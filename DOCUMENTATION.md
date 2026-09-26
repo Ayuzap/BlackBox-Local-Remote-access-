@@ -1812,6 +1812,45 @@ There are four kinds of people. The first two use the dashboard; the last two ar
 
 A screen playing its content, a small status pill (*ONLINE - live* or *OFFLINE - playing cached content*), and any broadcast overlay or emergency banner the admin sends.
 
+#### H2.4 Flowcharts: the viewer and the advertising agency
+
+Two views of the same system. An advertising agency is a **client admin** (or client viewer) in the roles above. Editable Excalidraw versions sit next to the repo: `../flowchart-viewer.excalidraw` and `../flowchart-ad-agency.excalidraw` (open at excalidraw.com).
+
+**Viewer: a person passing a screen (nothing to click, everything automatic)**
+
+```
+ person walks past a screen
+        │
+        ▼
+ screen reports GPS ─► server finds the zone ─► zone picks the ad or playlist ─► screen plays from its local cache
+                                                                                        │
+                                                                                        ▼
+                                                                        viewer sees an ad that fits this place
+ while they watch:
+   screen crosses a zone border ─► server sends a new manifest hash ─► screen fetches new media ─► next ad matches the new area
+   internet drops               ─► screen keeps playing from the disk cache ─► on reconnect it syncs
+   admin sends a broadcast      ─► ticker / banner / fullscreen appears within seconds ─► normal ads resume on expiry
+```
+
+**Advertising agency: from sign-in to a live campaign**
+
+```
+ sign in (password or Firebase)
+        │
+        ▼
+ account approved? ── no ──► stays "pending" until an admin gives a role (Users page)
+        │ yes
+        ▼
+ upload ad media (extension, magic bytes and size are checked)
+        ▼
+ pick WHERE (zone / city / group / device) ─► pick WHEN and HOW (time window, priority) ─► save the assignment
+        ▼
+ server re-resolves affected displays and pushes {"type":"sync"} ─► displays download the ad and play it in the right zones
+        ▼
+ watch results: play counts, device status, health
+ extras: live broadcast for urgent text · one-click city zone (96 cities) · clashes settle as emergency > priority > specificity, exact ties become a playlist
+```
+
 ### H3. One display's life, end to end
 
 ```

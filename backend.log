@@ -1,0 +1,732 @@
+INFO:     Started server process [11212]
+INFO:     Waiting for application startup.
+2026-09-20 23:14:31,733 WARNING app: SECRET_KEY is the built-in default - set a real one before exposing this server
+2026-09-20 23:14:31,734 WARNING app: Admin password is the default 'admin123' - change it in Users > Change my password
+2026-09-20 23:14:32,138 INFO seed: Created default admin user 'admin'
+2026-09-20 23:14:32,874 INFO seed: Seeded demo data (3 devices, 3 zones, 5 content items)
+INFO:     Application startup complete.
+INFO:     Uvicorn running on http://127.0.0.1:8010 (Press CTRL+C to quit)
+INFO:     127.0.0.1:52056 - "GET /docs HTTP/1.1" 200 OK
+INFO:     127.0.0.1:52061 - "POST /auth/login HTTP/1.1" 200 OK
+INFO:     127.0.0.1:61880 - "POST /auth/login HTTP/1.1" 200 OK
+INFO:     127.0.0.1:61885 - "GET /devices HTTP/1.1" 200 OK
+INFO:     127.0.0.1:50609 - "GET / HTTP/1.1" 404 Not Found
+INFO:     127.0.0.1:50609 - "GET /favicon.ico HTTP/1.1" 404 Not Found
+INFO:     127.0.0.1:59130 - "GET /auth/config HTTP/1.1" 200 OK
+INFO:     127.0.0.1:59132 - "GET /auth/config HTTP/1.1" 200 OK
+INFO:     127.0.0.1:51020 - "GET /auth/config HTTP/1.1" 200 OK
+INFO:     127.0.0.1:51022 - "GET /auth/config HTTP/1.1" 200 OK
+INFO:     127.0.0.1:51423 - "POST /auth/login HTTP/1.1" 200 OK
+INFO:     127.0.0.1:51429 - "GET /auth/config HTTP/1.1" 200 OK
+INFO:     ('127.0.0.1', 58631) - "WebSocket /ws/admin?token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJhZG1pbiIsInJvbGUiOiJhZG1pbiIsInR5cCI6ImFkbWluIiwiaWF0IjoxNzg5OTI2NDc0LCJleHAiOjE3ODk5Njk2NzR9.-yV0U1WDR6EqqKNNzSHNog5itfeM5sspCDqsqVw9oiM" [accepted]
+INFO:     connection open
+INFO:     connection closed
+INFO:     127.0.0.1:51523 - "GET /alerts HTTP/1.1" 200 OK
+INFO:     ('127.0.0.1', 51525) - "WebSocket /ws/admin?token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJhZG1pbiIsInJvbGUiOiJhZG1pbiIsInR5cCI6ImFkbWluIiwiaWF0IjoxNzg5OTI2NDc0LCJleHAiOjE3ODk5Njk2NzR9.-yV0U1WDR6EqqKNNzSHNog5itfeM5sspCDqsqVw9oiM" [accepted]
+INFO:     connection open
+INFO:     127.0.0.1:51528 - "GET /alerts HTTP/1.1" 200 OK
+INFO:     ('127.0.0.1', 49775) - "WebSocket /ws/admin?token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJhZG1pbiIsInJvbGUiOiJhZG1pbiIsInR5cCI6ImFkbWluIiwiaWF0IjoxNzg5OTI2NDc0LCJleHAiOjE3ODk5Njk2NzR9.-yV0U1WDR6EqqKNNzSHNog5itfeM5sspCDqsqVw9oiM" [accepted]
+INFO:     connection open
+INFO:     ('127.0.0.1', 53852) - "WebSocket /ws/admin?token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJhZG1pbiIsInJvbGUiOiJhZG1pbiIsInR5cCI6ImFkbWluIiwiaWF0IjoxNzg5OTI2NDc0LCJleHAiOjE3ODk5Njk2NzR9.-yV0U1WDR6EqqKNNzSHNog5itfeM5sspCDqsqVw9oiM" [accepted]
+INFO:     connection open
+INFO:     connection closed
+INFO:     127.0.0.1:53853 - "GET /settings/health HTTP/1.1" 200 OK
+INFO:     127.0.0.1:53854 - "GET /zones HTTP/1.1" 200 OK
+INFO:     127.0.0.1:53855 - "GET /monitoring/logs?limit=8 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:53860 - "GET /devices HTTP/1.1" 200 OK
+INFO:     127.0.0.1:53856 - "GET /monitoring/timeline HTTP/1.1" 200 OK
+INFO:     127.0.0.1:53858 - "GET /emergency HTTP/1.1" 200 OK
+INFO:     127.0.0.1:60441 - "GET /alerts HTTP/1.1" 200 OK
+INFO:     127.0.0.1:49799 - "GET /zones HTTP/1.1" 200 OK
+INFO:     127.0.0.1:54695 - "GET /settings/health HTTP/1.1" 200 OK
+INFO:     127.0.0.1:57759 - "GET /monitoring/logs?limit=8 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:57761 - "GET /devices HTTP/1.1" 200 OK
+INFO:     127.0.0.1:58906 - "GET /monitoring/timeline HTTP/1.1" 200 OK
+INFO:     127.0.0.1:54868 - "GET /emergency HTTP/1.1" 200 OK
+INFO:     127.0.0.1:59509 - "GET /alerts HTTP/1.1" 200 OK
+INFO:     connection closed
+INFO:     ('127.0.0.1', 58126) - "WebSocket /ws/admin?token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJhZG1pbiIsInJvbGUiOiJhZG1pbiIsInR5cCI6ImFkbWluIiwiaWF0IjoxNzg5OTI2NDc0LCJleHAiOjE3ODk5Njk2NzR9.-yV0U1WDR6EqqKNNzSHNog5itfeM5sspCDqsqVw9oiM" [accepted]
+INFO:     connection open
+INFO:     connection closed
+INFO:     ('127.0.0.1', 57961) - "WebSocket /ws/admin?token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJhZG1pbiIsInJvbGUiOiJhZG1pbiIsInR5cCI6ImFkbWluIiwiaWF0IjoxNzg5OTI2NDc0LCJleHAiOjE3ODk5Njk2NzR9.-yV0U1WDR6EqqKNNzSHNog5itfeM5sspCDqsqVw9oiM" [accepted]
+INFO:     connection open
+INFO:     127.0.0.1:58128 - "GET /settings/health HTTP/1.1" 200 OK
+INFO:     127.0.0.1:58127 - "GET /devices HTTP/1.1" 200 OK
+INFO:     127.0.0.1:58130 - "GET /groups HTTP/1.1" 200 OK
+INFO:     127.0.0.1:62302 - "GET /settings/health HTTP/1.1" 200 OK
+INFO:     127.0.0.1:55028 - "GET /devices HTTP/1.1" 200 OK
+INFO:     127.0.0.1:55029 - "GET /groups HTTP/1.1" 200 OK
+INFO:     127.0.0.1:64494 - "GET /devices HTTP/1.1" 200 OK
+INFO:     127.0.0.1:58542 - "GET /devices HTTP/1.1" 200 OK
+INFO:     connection closed
+INFO:     127.0.0.1:49398 - "GET /content HTTP/1.1" 200 OK
+INFO:     127.0.0.1:49684 - "GET /content HTTP/1.1" 200 OK
+INFO:     127.0.0.1:59723 - "GET /content/1/file?token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJhZG1pbiIsInJvbGUiOiJhZG1pbiIsInR5cCI6ImFkbWluIiwiaWF0IjoxNzg5OTI2NDc0LCJleHAiOjE3ODk5Njk2NzR9.-yV0U1WDR6EqqKNNzSHNog5itfeM5sspCDqsqVw9oiM&v=1 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:59719 - "GET /content/5/file?token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJhZG1pbiIsInJvbGUiOiJhZG1pbiIsInR5cCI6ImFkbWluIiwiaWF0IjoxNzg5OTI2NDc0LCJleHAiOjE3ODk5Njk2NzR9.-yV0U1WDR6EqqKNNzSHNog5itfeM5sspCDqsqVw9oiM&v=1 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:59721 - "GET /content/3/file?token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJhZG1pbiIsInJvbGUiOiJhZG1pbiIsInR5cCI6ImFkbWluIiwiaWF0IjoxNzg5OTI2NDc0LCJleHAiOjE3ODk5Njk2NzR9.-yV0U1WDR6EqqKNNzSHNog5itfeM5sspCDqsqVw9oiM&v=1 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:59722 - "GET /content/2/file?token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJhZG1pbiIsInJvbGUiOiJhZG1pbiIsInR5cCI6ImFkbWluIiwiaWF0IjoxNzg5OTI2NDc0LCJleHAiOjE3ODk5Njk2NzR9.-yV0U1WDR6EqqKNNzSHNog5itfeM5sspCDqsqVw9oiM&v=1 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:59720 - "GET /content/4/file?token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJhZG1pbiIsInJvbGUiOiJhZG1pbiIsInR5cCI6ImFkbWluIiwiaWF0IjoxNzg5OTI2NDc0LCJleHAiOjE3ODk5Njk2NzR9.-yV0U1WDR6EqqKNNzSHNog5itfeM5sspCDqsqVw9oiM&v=1 HTTP/1.1" 200 OK
+INFO:     ('127.0.0.1', 59088) - "WebSocket /ws/admin?token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJhZG1pbiIsInJvbGUiOiJhZG1pbiIsInR5cCI6ImFkbWluIiwiaWF0IjoxNzg5OTI2NDc0LCJleHAiOjE3ODk5Njk2NzR9.-yV0U1WDR6EqqKNNzSHNog5itfeM5sspCDqsqVw9oiM" [accepted]
+INFO:     connection open
+INFO:     connection closed
+INFO:     127.0.0.1:62391 - "GET /cities HTTP/1.1" 200 OK
+INFO:     ('127.0.0.1', 57215) - "WebSocket /ws/admin?token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJhZG1pbiIsInJvbGUiOiJhZG1pbiIsInR5cCI6ImFkbWluIiwiaWF0IjoxNzg5OTI2NDc0LCJleHAiOjE3ODk5Njk2NzR9.-yV0U1WDR6EqqKNNzSHNog5itfeM5sspCDqsqVw9oiM" [accepted]
+INFO:     connection open
+INFO:     127.0.0.1:62392 - "GET /devices HTTP/1.1" 200 OK
+INFO:     127.0.0.1:57212 - "GET /assignments HTTP/1.1" 200 OK
+INFO:     127.0.0.1:57213 - "GET /zones HTTP/1.1" 200 OK
+INFO:     127.0.0.1:53119 - "GET /cities HTTP/1.1" 200 OK
+INFO:     127.0.0.1:51235 - "GET /devices HTTP/1.1" 200 OK
+INFO:     127.0.0.1:51926 - "GET /zones HTTP/1.1" 200 OK
+INFO:     127.0.0.1:51925 - "GET /assignments HTTP/1.1" 200 OK
+INFO:     connection closed
+INFO:     127.0.0.1:59953 - "GET /content HTTP/1.1" 200 OK
+INFO:     127.0.0.1:59954 - "GET /zones HTTP/1.1" 200 OK
+INFO:     127.0.0.1:59958 - "GET /assignments HTTP/1.1" 200 OK
+INFO:     127.0.0.1:59957 - "GET /groups HTTP/1.1" 200 OK
+INFO:     127.0.0.1:54934 - "GET /content HTTP/1.1" 200 OK
+INFO:     127.0.0.1:52877 - "GET /assignments HTTP/1.1" 200 OK
+INFO:     127.0.0.1:52875 - "GET /zones HTTP/1.1" 200 OK
+INFO:     127.0.0.1:63584 - "GET /groups HTTP/1.1" 200 OK
+INFO:     ('127.0.0.1', 58162) - "WebSocket /ws/admin?token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJhZG1pbiIsInJvbGUiOiJhZG1pbiIsInR5cCI6ImFkbWluIiwiaWF0IjoxNzg5OTI2NDc0LCJleHAiOjE3ODk5Njk2NzR9.-yV0U1WDR6EqqKNNzSHNog5itfeM5sspCDqsqVw9oiM" [accepted]
+INFO:     connection open
+INFO:     127.0.0.1:55385 - "GET /devices HTTP/1.1" 200 OK
+INFO:     ('127.0.0.1', 51440) - "WebSocket /ws/admin?token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJhZG1pbiIsInJvbGUiOiJhZG1pbiIsInR5cCI6ImFkbWluIiwiaWF0IjoxNzg5OTI2NDc0LCJleHAiOjE3ODk5Njk2NzR9.-yV0U1WDR6EqqKNNzSHNog5itfeM5sspCDqsqVw9oiM" [accepted]
+INFO:     connection open
+INFO:     127.0.0.1:55389 - "GET /broadcasts?limit=30 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:55390 - "GET /zones HTTP/1.1" 200 OK
+INFO:     connection closed
+INFO:     127.0.0.1:55391 - "GET /groups HTTP/1.1" 200 OK
+INFO:     connection closed
+INFO:     ('127.0.0.1', 55411) - "WebSocket /ws/admin?token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJhZG1pbiIsInJvbGUiOiJhZG1pbiIsInR5cCI6ImFkbWluIiwiaWF0IjoxNzg5OTI2NDc0LCJleHAiOjE3ODk5Njk2NzR9.-yV0U1WDR6EqqKNNzSHNog5itfeM5sspCDqsqVw9oiM" [accepted]
+INFO:     connection open
+INFO:     127.0.0.1:55413 - "GET /devices HTTP/1.1" 200 OK
+INFO:     ('127.0.0.1', 55670) - "WebSocket /ws/admin?token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJhZG1pbiIsInJvbGUiOiJhZG1pbiIsInR5cCI6ImFkbWluIiwiaWF0IjoxNzg5OTI2NDc0LCJleHAiOjE3ODk5Njk2NzR9.-yV0U1WDR6EqqKNNzSHNog5itfeM5sspCDqsqVw9oiM" [accepted]
+INFO:     connection open
+INFO:     127.0.0.1:62464 - "GET /broadcasts?limit=30 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:62465 - "GET /zones HTTP/1.1" 200 OK
+INFO:     127.0.0.1:62467 - "GET /groups HTTP/1.1" 200 OK
+INFO:     connection closed
+INFO:     connection closed
+INFO:     127.0.0.1:50496 - "GET /content HTTP/1.1" 200 OK
+INFO:     127.0.0.1:57752 - "GET /content HTTP/1.1" 200 OK
+INFO:     ('127.0.0.1', 62897) - "WebSocket /ws/admin?token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJhZG1pbiIsInJvbGUiOiJhZG1pbiIsInR5cCI6ImFkbWluIiwiaWF0IjoxNzg5OTI2NDc0LCJleHAiOjE3ODk5Njk2NzR9.-yV0U1WDR6EqqKNNzSHNog5itfeM5sspCDqsqVw9oiM" [accepted]
+INFO:     connection open
+INFO:     connection closed
+INFO:     127.0.0.1:53224 - "GET /devices HTTP/1.1" 200 OK
+INFO:     ('127.0.0.1', 62019) - "WebSocket /ws/admin?token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJhZG1pbiIsInJvbGUiOiJhZG1pbiIsInR5cCI6ImFkbWluIiwiaWF0IjoxNzg5OTI2NDc0LCJleHAiOjE3ODk5Njk2NzR9.-yV0U1WDR6EqqKNNzSHNog5itfeM5sspCDqsqVw9oiM" [accepted]
+INFO:     connection open
+INFO:     127.0.0.1:53225 - "GET /settings/health HTTP/1.1" 200 OK
+INFO:     127.0.0.1:53227 - "GET /groups HTTP/1.1" 200 OK
+INFO:     127.0.0.1:54027 - "GET /devices HTTP/1.1" 200 OK
+INFO:     127.0.0.1:57067 - "GET /settings/health HTTP/1.1" 200 OK
+INFO:     127.0.0.1:57068 - "GET /groups HTTP/1.1" 200 OK
+INFO:     127.0.0.1:62548 - "GET /devices HTTP/1.1" 200 OK
+INFO:     127.0.0.1:65521 - "GET /devices HTTP/1.1" 200 OK
+INFO:     127.0.0.1:49672 - "GET /zones HTTP/1.1" 200 OK
+INFO:     127.0.0.1:49676 - "GET /discovery/agents HTTP/1.1" 200 OK
+INFO:     127.0.0.1:49677 - "GET /cities HTTP/1.1" 200 OK
+INFO:     127.0.0.1:54237 - "GET /zones HTTP/1.1" 200 OK
+INFO:     127.0.0.1:53484 - "GET /discovery/agents HTTP/1.1" 200 OK
+INFO:     127.0.0.1:53486 - "GET /cities HTTP/1.1" 200 OK
+INFO:     127.0.0.1:51799 - "GET /discovery/agents HTTP/1.1" 200 OK
+INFO:     ('127.0.0.1', 59795) - "WebSocket /ws/admin?token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJhZG1pbiIsInJvbGUiOiJhZG1pbiIsInR5cCI6ImFkbWluIiwiaWF0IjoxNzg5OTI2NDc0LCJleHAiOjE3ODk5Njk2NzR9.-yV0U1WDR6EqqKNNzSHNog5itfeM5sspCDqsqVw9oiM" [accepted]
+INFO:     connection open
+INFO:     connection closed
+INFO:     127.0.0.1:64778 - "GET /settings/health HTTP/1.1" 200 OK
+INFO:     ('127.0.0.1', 53650) - "WebSocket /ws/admin?token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJhZG1pbiIsInJvbGUiOiJhZG1pbiIsInR5cCI6ImFkbWluIiwiaWF0IjoxNzg5OTI2NDc0LCJleHAiOjE3ODk5Njk2NzR9.-yV0U1WDR6EqqKNNzSHNog5itfeM5sspCDqsqVw9oiM" [accepted]
+INFO:     connection open
+INFO:     127.0.0.1:64781 - "GET /devices/DEV-001/logs?limit=15 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:64780 - "GET /devices/DEV-001 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:58199 - "GET /settings/health HTTP/1.1" 200 OK
+INFO:     127.0.0.1:51375 - "GET /devices/DEV-001/logs?limit=15 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:51376 - "GET /devices/DEV-001 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:56964 - "POST /devices/DEV-001/sync HTTP/1.1" 200 OK
+INFO:     127.0.0.1:49674 - "POST /devices/DEV-001/rotate-token HTTP/1.1" 200 OK
+INFO:     127.0.0.1:53298 - "GET /devices HTTP/1.1" 200 OK
+INFO:     127.0.0.1:53299 - "GET /groups HTTP/1.1" 200 OK
+INFO:     127.0.0.1:52506 - "GET /alerts HTTP/1.1" 200 OK
+INFO:     connection closed
+INFO:     ('127.0.0.1', 63897) - "WebSocket /ws/admin?token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJhZG1pbiIsInJvbGUiOiJhZG1pbiIsInR5cCI6ImFkbWluIiwiaWF0IjoxNzg5OTI2NDc0LCJleHAiOjE3ODk5Njk2NzR9.-yV0U1WDR6EqqKNNzSHNog5itfeM5sspCDqsqVw9oiM" [accepted]
+INFO:     connection open
+INFO:     connection closed
+INFO:     127.0.0.1:50433 - "GET /settings/health HTTP/1.1" 200 OK
+INFO:     ('127.0.0.1', 56720) - "WebSocket /ws/admin?token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJhZG1pbiIsInJvbGUiOiJhZG1pbiIsInR5cCI6ImFkbWluIiwiaWF0IjoxNzg5OTI2NDc0LCJleHAiOjE3ODk5Njk2NzR9.-yV0U1WDR6EqqKNNzSHNog5itfeM5sspCDqsqVw9oiM" [accepted]
+INFO:     connection open
+INFO:     127.0.0.1:50436 - "GET /devices/DEV-001/logs?limit=15 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:50435 - "GET /devices/DEV-001 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:59009 - "GET /settings/health HTTP/1.1" 200 OK
+INFO:     127.0.0.1:64873 - "GET /devices/DEV-001/logs?limit=15 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:64875 - "GET /devices/DEV-001 HTTP/1.1" 200 OK
+INFO:     connection closed
+INFO:     127.0.0.1:57399 - "GET /alerts HTTP/1.1" 200 OK
+INFO:     connection closed
+INFO:     127.0.0.1:63540 - "GET /content HTTP/1.1" 200 OK
+INFO:     127.0.0.1:52101 - "GET /content HTTP/1.1" 200 OK
+INFO:     ('127.0.0.1', 61656) - "WebSocket /ws/admin?token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJhZG1pbiIsInJvbGUiOiJhZG1pbiIsInR5cCI6ImFkbWluIiwiaWF0IjoxNzg5OTI2NDc0LCJleHAiOjE3ODk5Njk2NzR9.-yV0U1WDR6EqqKNNzSHNog5itfeM5sspCDqsqVw9oiM" [accepted]
+INFO:     connection open
+INFO:     connection closed
+INFO:     ('127.0.0.1', 62121) - "WebSocket /ws/admin?token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJhZG1pbiIsInJvbGUiOiJhZG1pbiIsInR5cCI6ImFkbWluIiwiaWF0IjoxNzg5OTI2NDc0LCJleHAiOjE3ODk5Njk2NzR9.-yV0U1WDR6EqqKNNzSHNog5itfeM5sspCDqsqVw9oiM" [accepted]
+INFO:     connection open
+INFO:     127.0.0.1:62119 - "GET /monitoring/logs?limit=8 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:62118 - "GET /zones HTTP/1.1" 200 OK
+INFO:     127.0.0.1:62122 - "GET /emergency HTTP/1.1" 200 OK
+INFO:     127.0.0.1:62117 - "GET /settings/health HTTP/1.1" 200 OK
+INFO:     127.0.0.1:62120 - "GET /monitoring/timeline HTTP/1.1" 200 OK
+INFO:     127.0.0.1:62124 - "GET /alerts HTTP/1.1" 200 OK
+INFO:     127.0.0.1:56132 - "GET /devices HTTP/1.1" 200 OK
+INFO:     127.0.0.1:51391 - "GET /monitoring/logs?limit=8 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:55040 - "GET /zones HTTP/1.1" 200 OK
+INFO:     127.0.0.1:55041 - "GET /emergency HTTP/1.1" 200 OK
+INFO:     127.0.0.1:58429 - "GET /monitoring/timeline HTTP/1.1" 200 OK
+INFO:     127.0.0.1:58427 - "GET /settings/health HTTP/1.1" 200 OK
+INFO:     127.0.0.1:58431 - "GET /alerts HTTP/1.1" 200 OK
+INFO:     127.0.0.1:63342 - "GET /devices HTTP/1.1" 200 OK
+INFO:     connection closed
+INFO:     ('127.0.0.1', 60140) - "WebSocket /ws/admin?token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJhZG1pbiIsInJvbGUiOiJhZG1pbiIsInR5cCI6ImFkbWluIiwiaWF0IjoxNzg5OTI2NDc0LCJleHAiOjE3ODk5Njk2NzR9.-yV0U1WDR6EqqKNNzSHNog5itfeM5sspCDqsqVw9oiM" [accepted]
+INFO:     connection open
+INFO:     connection closed
+INFO:     ('127.0.0.1', 60099) - "WebSocket /ws/admin?token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJhZG1pbiIsInJvbGUiOiJhZG1pbiIsInR5cCI6ImFkbWluIiwiaWF0IjoxNzg5OTI2NDc0LCJleHAiOjE3ODk5Njk2NzR9.-yV0U1WDR6EqqKNNzSHNog5itfeM5sspCDqsqVw9oiM" [accepted]
+INFO:     connection open
+INFO:     127.0.0.1:50969 - "GET /devices HTTP/1.1" 200 OK
+INFO:     127.0.0.1:50972 - "GET /groups HTTP/1.1" 200 OK
+INFO:     127.0.0.1:50971 - "GET /settings/health HTTP/1.1" 200 OK
+INFO:     127.0.0.1:49972 - "GET /devices HTTP/1.1" 200 OK
+INFO:     127.0.0.1:49976 - "GET /settings/health HTTP/1.1" 200 OK
+INFO:     127.0.0.1:49975 - "GET /groups HTTP/1.1" 200 OK
+INFO:     127.0.0.1:59961 - "GET /devices HTTP/1.1" 200 OK
+INFO:     127.0.0.1:60941 - "GET /devices HTTP/1.1" 200 OK
+INFO:     connection closed
+INFO:     127.0.0.1:64077 - "GET /content HTTP/1.1" 200 OK
+INFO:     127.0.0.1:55255 - "GET /content HTTP/1.1" 200 OK
+INFO:     ('127.0.0.1', 60564) - "WebSocket /ws/admin?token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJhZG1pbiIsInJvbGUiOiJhZG1pbiIsInR5cCI6ImFkbWluIiwiaWF0IjoxNzg5OTI2NDc0LCJleHAiOjE3ODk5Njk2NzR9.-yV0U1WDR6EqqKNNzSHNog5itfeM5sspCDqsqVw9oiM" [accepted]
+INFO:     connection open
+INFO:     ('127.0.0.1', 57891) - "WebSocket /ws/admin?token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJhZG1pbiIsInJvbGUiOiJhZG1pbiIsInR5cCI6ImFkbWluIiwiaWF0IjoxNzg5OTI2NDc0LCJleHAiOjE3ODk5Njk2NzR9.-yV0U1WDR6EqqKNNzSHNog5itfeM5sspCDqsqVw9oiM" [accepted]
+INFO:     connection open
+INFO:     connection closed
+INFO:     127.0.0.1:62016 - "GET /cities HTTP/1.1" 200 OK
+INFO:     127.0.0.1:57892 - "GET /devices HTTP/1.1" 200 OK
+INFO:     127.0.0.1:57896 - "GET /zones HTTP/1.1" 200 OK
+INFO:     127.0.0.1:57897 - "GET /assignments HTTP/1.1" 200 OK
+INFO:     127.0.0.1:54795 - "GET /cities HTTP/1.1" 200 OK
+INFO:     127.0.0.1:60237 - "GET /devices HTTP/1.1" 200 OK
+INFO:     127.0.0.1:63802 - "GET /zones HTTP/1.1" 200 OK
+INFO:     127.0.0.1:63804 - "GET /assignments HTTP/1.1" 200 OK
+INFO:     connection closed
+INFO:     127.0.0.1:62899 - "GET /content HTTP/1.1" 200 OK
+INFO:     127.0.0.1:62900 - "GET /zones HTTP/1.1" 200 OK
+INFO:     127.0.0.1:62903 - "GET /assignments HTTP/1.1" 200 OK
+INFO:     127.0.0.1:62904 - "GET /groups HTTP/1.1" 200 OK
+INFO:     127.0.0.1:58864 - "GET /content HTTP/1.1" 200 OK
+INFO:     127.0.0.1:54536 - "GET /zones HTTP/1.1" 200 OK
+INFO:     127.0.0.1:54538 - "GET /assignments HTTP/1.1" 200 OK
+INFO:     127.0.0.1:54540 - "GET /groups HTTP/1.1" 200 OK
+INFO:     ('127.0.0.1', 61514) - "WebSocket /ws/admin?token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJhZG1pbiIsInJvbGUiOiJhZG1pbiIsInR5cCI6ImFkbWluIiwiaWF0IjoxNzg5OTI2NDc0LCJleHAiOjE3ODk5Njk2NzR9.-yV0U1WDR6EqqKNNzSHNog5itfeM5sspCDqsqVw9oiM" [accepted]
+INFO:     connection open
+INFO:     127.0.0.1:54981 - "GET /devices HTTP/1.1" 200 OK
+INFO:     connection closed
+INFO:     ('127.0.0.1', 49868) - "WebSocket /ws/admin?token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJhZG1pbiIsInJvbGUiOiJhZG1pbiIsInR5cCI6ImFkbWluIiwiaWF0IjoxNzg5OTI2NDc0LCJleHAiOjE3ODk5Njk2NzR9.-yV0U1WDR6EqqKNNzSHNog5itfeM5sspCDqsqVw9oiM" [accepted]
+INFO:     connection open
+INFO:     127.0.0.1:59969 - "GET /broadcasts?limit=30 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:59970 - "GET /zones HTTP/1.1" 200 OK
+INFO:     127.0.0.1:59973 - "GET /groups HTTP/1.1" 200 OK
+INFO:     ('127.0.0.1', 64567) - "WebSocket /ws/admin?token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJhZG1pbiIsInJvbGUiOiJhZG1pbiIsInR5cCI6ImFkbWluIiwiaWF0IjoxNzg5OTI2NDc0LCJleHAiOjE3ODk5Njk2NzR9.-yV0U1WDR6EqqKNNzSHNog5itfeM5sspCDqsqVw9oiM" [accepted]
+INFO:     connection open
+INFO:     127.0.0.1:49870 - "GET /devices HTTP/1.1" 200 OK
+INFO:     127.0.0.1:60093 - "GET /broadcasts?limit=30 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:60096 - "GET /zones HTTP/1.1" 200 OK
+INFO:     127.0.0.1:60097 - "GET /groups HTTP/1.1" 200 OK
+INFO:     connection closed
+INFO:     connection closed
+INFO:     ('127.0.0.1', 61044) - "WebSocket /ws/admin?token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJhZG1pbiIsInJvbGUiOiJhZG1pbiIsInR5cCI6ImFkbWluIiwiaWF0IjoxNzg5OTI2NDc0LCJleHAiOjE3ODk5Njk2NzR9.-yV0U1WDR6EqqKNNzSHNog5itfeM5sspCDqsqVw9oiM" [accepted]
+INFO:     connection open
+INFO:     ('127.0.0.1', 51426) - "WebSocket /ws/admin?token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJhZG1pbiIsInJvbGUiOiJhZG1pbiIsInR5cCI6ImFkbWluIiwiaWF0IjoxNzg5OTI2NDc0LCJleHAiOjE3ODk5Njk2NzR9.-yV0U1WDR6EqqKNNzSHNog5itfeM5sspCDqsqVw9oiM" [accepted]
+INFO:     connection closed
+INFO:     connection open
+INFO:     127.0.0.1:51418 - "GET /cities HTTP/1.1" 200 OK
+INFO:     127.0.0.1:51422 - "GET /zones HTTP/1.1" 200 OK
+INFO:     127.0.0.1:51420 - "GET /devices HTTP/1.1" 200 OK
+INFO:     127.0.0.1:51423 - "GET /assignments HTTP/1.1" 200 OK
+INFO:     127.0.0.1:60207 - "GET /cities HTTP/1.1" 200 OK
+INFO:     127.0.0.1:59675 - "GET /devices HTTP/1.1" 200 OK
+INFO:     127.0.0.1:59672 - "GET /zones HTTP/1.1" 200 OK
+INFO:     127.0.0.1:59676 - "GET /assignments HTTP/1.1" 200 OK
+INFO:     127.0.0.1:55068 - "GET /cities/agra HTTP/1.1" 200 OK
+INFO:     127.0.0.1:52194 - "GET /cities/ahmedabad HTTP/1.1" 200 OK
+INFO:     127.0.0.1:58814 - "GET /cities/amritsar HTTP/1.1" 200 OK
+INFO:     127.0.0.1:63970 - "GET /cities/bengaluru HTTP/1.1" 200 OK
+INFO:     127.0.0.1:49711 - "GET /cities/bhopal HTTP/1.1" 200 OK
+INFO:     127.0.0.1:52126 - "GET /cities/gurugram HTTP/1.1" 200 OK
+INFO:     127.0.0.1:54005 - "GET /cities/guwahati HTTP/1.1" 200 OK
+INFO:     127.0.0.1:50714 - "GET /cities/indore HTTP/1.1" 200 OK
+INFO:     127.0.0.1:64095 - "GET /cities/indore HTTP/1.1" 200 OK
+INFO:     127.0.0.1:59204 - "GET /cities/mangaluru HTTP/1.1" 200 OK
+INFO:     127.0.0.1:63050 - "GET /cities/mohali HTTP/1.1" 200 OK
+INFO:     127.0.0.1:52515 - "GET /cities/nashik HTTP/1.1" 200 OK
+INFO:     127.0.0.1:59234 - "GET /cities/noida HTTP/1.1" 200 OK
+INFO:     127.0.0.1:50833 - "GET /cities/visakhapatnam HTTP/1.1" 200 OK
+INFO:     127.0.0.1:62930 - "GET /cities/vijayawada HTTP/1.1" 200 OK
+INFO:     127.0.0.1:52150 - "GET /cities/ahmedabad HTTP/1.1" 200 OK
+INFO:     127.0.0.1:60138 - "POST /cities/ahmedabad/zone HTTP/1.1" 201 Created
+INFO:     127.0.0.1:62360 - "GET /cities HTTP/1.1" 200 OK
+INFO:     127.0.0.1:58669 - "GET /assignments HTTP/1.1" 200 OK
+INFO:     127.0.0.1:58668 - "GET /zones HTTP/1.1" 200 OK
+INFO:     127.0.0.1:65109 - "GET /content HTTP/1.1" 200 OK
+INFO:     127.0.0.1:65112 - "GET /zones HTTP/1.1" 200 OK
+INFO:     127.0.0.1:65113 - "GET /groups HTTP/1.1" 200 OK
+INFO:     127.0.0.1:51716 - "GET /alerts HTTP/1.1" 200 OK
+INFO:     127.0.0.1:55449 - "GET /content HTTP/1.1" 200 OK
+INFO:     127.0.0.1:51016 - "GET /zones HTTP/1.1" 200 OK
+INFO:     127.0.0.1:58820 - "GET /groups HTTP/1.1" 200 OK
+INFO:     127.0.0.1:64362 - "DELETE /zones/1 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:49781 - "GET /zones HTTP/1.1" 200 OK
+INFO:     127.0.0.1:49782 - "GET /assignments HTTP/1.1" 200 OK
+INFO:     127.0.0.1:56852 - "DELETE /zones/2 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:57360 - "GET /zones HTTP/1.1" 200 OK
+INFO:     127.0.0.1:57361 - "GET /assignments HTTP/1.1" 200 OK
+INFO:     127.0.0.1:55490 - "DELETE /zones/3 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:50722 - "GET /assignments HTTP/1.1" 200 OK
+INFO:     127.0.0.1:50721 - "GET /zones HTTP/1.1" 200 OK
+INFO:     127.0.0.1:58555 - "DELETE /zones/4 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:52973 - "GET /zones HTTP/1.1" 200 OK
+INFO:     127.0.0.1:52974 - "GET /assignments HTTP/1.1" 200 OK
+INFO:     127.0.0.1:59745 - "GET /cities/agra HTTP/1.1" 200 OK
+INFO:     127.0.0.1:60319 - "GET /cities/amritsar HTTP/1.1" 200 OK
+INFO:     127.0.0.1:63512 - "GET /cities/bengaluru HTTP/1.1" 200 OK
+INFO:     127.0.0.1:54143 - "GET /cities/amritsar HTTP/1.1" 200 OK
+INFO:     127.0.0.1:59385 - "GET /alerts HTTP/1.1" 200 OK
+INFO:     127.0.0.1:49875 - "GET /alerts HTTP/1.1" 200 OK
+INFO:     127.0.0.1:51060 - "GET /alerts HTTP/1.1" 200 OK
+INFO:     127.0.0.1:51581 - "GET /cities/bengaluru HTTP/1.1" 200 OK
+INFO:     127.0.0.1:54597 - "GET /cities/bhopal HTTP/1.1" 200 OK
+INFO:     127.0.0.1:53479 - "GET /cities/agra HTTP/1.1" 200 OK
+INFO:     127.0.0.1:60071 - "GET /cities/amritsar HTTP/1.1" 200 OK
+INFO:     127.0.0.1:63668 - "GET /alerts HTTP/1.1" 200 OK
+INFO:     127.0.0.1:63955 - "GET /cities/guwahati HTTP/1.1" 200 OK
+INFO:     127.0.0.1:59887 - "GET /cities/indore HTTP/1.1" 200 OK
+INFO:     127.0.0.1:64600 - "GET /cities/varanasi HTTP/1.1" 200 OK
+INFO:     127.0.0.1:65492 - "GET /cities/vadodara HTTP/1.1" 200 OK
+INFO:     127.0.0.1:61842 - "GET /cities/bengaluru HTTP/1.1" 200 OK
+INFO:     127.0.0.1:50271 - "GET /cities/agra HTTP/1.1" 200 OK
+INFO:     127.0.0.1:55173 - "GET /alerts HTTP/1.1" 200 OK
+INFO:     127.0.0.1:61108 - "GET /cities/amritsar HTTP/1.1" 200 OK
+INFO:     127.0.0.1:50755 - "POST /zones HTTP/1.1" 201 Created
+INFO:     127.0.0.1:51573 - "GET /zones HTTP/1.1" 200 OK
+INFO:     127.0.0.1:51574 - "GET /assignments HTTP/1.1" 200 OK
+INFO:     127.0.0.1:63113 - "GET /content HTTP/1.1" 200 OK
+INFO:     127.0.0.1:63118 - "GET /zones HTTP/1.1" 200 OK
+INFO:     127.0.0.1:63117 - "GET /groups HTTP/1.1" 200 OK
+INFO:     127.0.0.1:63372 - "GET /content HTTP/1.1" 200 OK
+INFO:     127.0.0.1:58428 - "GET /zones HTTP/1.1" 200 OK
+INFO:     127.0.0.1:58430 - "GET /groups HTTP/1.1" 200 OK
+INFO:     127.0.0.1:55892 - "GET /alerts HTTP/1.1" 200 OK
+INFO:     127.0.0.1:55890 - "DELETE /zones/1 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:64630 - "GET /zones HTTP/1.1" 200 OK
+INFO:     127.0.0.1:64632 - "GET /assignments HTTP/1.1" 200 OK
+INFO:     127.0.0.1:59247 - "GET /cities/nashik HTTP/1.1" 200 OK
+INFO:     127.0.0.1:62690 - "GET /cities/noida HTTP/1.1" 200 OK
+INFO:     connection closed
+INFO:     ('127.0.0.1', 62127) - "WebSocket /ws/admin?token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJhZG1pbiIsInJvbGUiOiJhZG1pbiIsInR5cCI6ImFkbWluIiwiaWF0IjoxNzg5OTI2NDc0LCJleHAiOjE3ODk5Njk2NzR9.-yV0U1WDR6EqqKNNzSHNog5itfeM5sspCDqsqVw9oiM" [accepted]
+INFO:     connection open
+INFO:     connection closed
+INFO:     127.0.0.1:54329 - "GET /settings/health HTTP/1.1" 200 OK
+INFO:     ('127.0.0.1', 51519) - "WebSocket /ws/admin?token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJhZG1pbiIsInJvbGUiOiJhZG1pbiIsInR5cCI6ImFkbWluIiwiaWF0IjoxNzg5OTI2NDc0LCJleHAiOjE3ODk5Njk2NzR9.-yV0U1WDR6EqqKNNzSHNog5itfeM5sspCDqsqVw9oiM" [accepted]
+INFO:     connection open
+INFO:     127.0.0.1:54336 - "GET /devices HTTP/1.1" 200 OK
+INFO:     127.0.0.1:54334 - "GET /monitoring/logs?limit=40 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:54332 - "GET /alerts?state=all&limit=25 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:60926 - "GET /settings/health HTTP/1.1" 200 OK
+INFO:     127.0.0.1:54335 - "GET /monitoring/analytics HTTP/1.1" 200 OK
+INFO:     127.0.0.1:61163 - "GET /devices HTTP/1.1" 200 OK
+INFO:     127.0.0.1:61165 - "GET /monitoring/logs?limit=40 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:50858 - "GET /alerts?state=all&limit=25 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:50860 - "GET /monitoring/analytics HTTP/1.1" 200 OK
+INFO:     connection closed
+INFO:     127.0.0.1:49709 - "GET /users HTTP/1.1" 200 OK
+INFO:     127.0.0.1:49265 - "GET /users HTTP/1.1" 200 OK
+INFO:     ('127.0.0.1', 55420) - "WebSocket /ws/admin?token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJhZG1pbiIsInJvbGUiOiJhZG1pbiIsInR5cCI6ImFkbWluIiwiaWF0IjoxNzg5OTI2NDc0LCJleHAiOjE3ODk5Njk2NzR9.-yV0U1WDR6EqqKNNzSHNog5itfeM5sspCDqsqVw9oiM" [accepted]
+INFO:     connection open
+INFO:     connection closed
+INFO:     ('127.0.0.1', 63211) - "WebSocket /ws/admin?token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJhZG1pbiIsInJvbGUiOiJhZG1pbiIsInR5cCI6ImFkbWluIiwiaWF0IjoxNzg5OTI2NDc0LCJleHAiOjE3ODk5Njk2NzR9.-yV0U1WDR6EqqKNNzSHNog5itfeM5sspCDqsqVw9oiM" [accepted]
+INFO:     connection open
+INFO:     127.0.0.1:60981 - "GET /settings/health HTTP/1.1" 200 OK
+INFO:     127.0.0.1:60987 - "GET /monitoring/logs?limit=40 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:60986 - "GET /alerts?state=all&limit=25 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:60989 - "GET /devices HTTP/1.1" 200 OK
+INFO:     127.0.0.1:60988 - "GET /monitoring/analytics HTTP/1.1" 200 OK
+INFO:     127.0.0.1:65437 - "GET /settings/health HTTP/1.1" 200 OK
+INFO:     127.0.0.1:52298 - "GET /monitoring/logs?limit=40 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:57181 - "GET /devices HTTP/1.1" 200 OK
+INFO:     127.0.0.1:57180 - "GET /alerts?state=all&limit=25 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:49671 - "GET /monitoring/analytics HTTP/1.1" 200 OK
+INFO:     connection closed
+INFO:     127.0.0.1:55610 - "GET /alerts HTTP/1.1" 200 OK
+INFO:     127.0.0.1:52973 - "GET /emergency HTTP/1.1" 200 OK
+INFO:     127.0.0.1:52976 - "GET /content HTTP/1.1" 200 OK
+INFO:     127.0.0.1:52978 - "GET /zones HTTP/1.1" 200 OK
+INFO:     127.0.0.1:52979 - "GET /groups HTTP/1.1" 200 OK
+INFO:     127.0.0.1:51044 - "GET /emergency HTTP/1.1" 200 OK
+INFO:     127.0.0.1:53065 - "GET /content HTTP/1.1" 200 OK
+INFO:     127.0.0.1:59930 - "GET /zones HTTP/1.1" 200 OK
+INFO:     127.0.0.1:59931 - "GET /groups HTTP/1.1" 200 OK
+INFO:     ('127.0.0.1', 49875) - "WebSocket /ws/admin?token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJhZG1pbiIsInJvbGUiOiJhZG1pbiIsInR5cCI6ImFkbWluIiwiaWF0IjoxNzg5OTI2NDc0LCJleHAiOjE3ODk5Njk2NzR9.-yV0U1WDR6EqqKNNzSHNog5itfeM5sspCDqsqVw9oiM" [accepted]
+INFO:     connection open
+INFO:     connection closed
+INFO:     127.0.0.1:55632 - "GET /devices HTTP/1.1" 200 OK
+INFO:     ('127.0.0.1', 63316) - "WebSocket /ws/admin?token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJhZG1pbiIsInJvbGUiOiJhZG1pbiIsInR5cCI6ImFkbWluIiwiaWF0IjoxNzg5OTI2NDc0LCJleHAiOjE3ODk5Njk2NzR9.-yV0U1WDR6EqqKNNzSHNog5itfeM5sspCDqsqVw9oiM" [accepted]
+INFO:     connection open
+INFO:     127.0.0.1:55964 - "GET /broadcasts?limit=30 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:55966 - "GET /zones HTTP/1.1" 200 OK
+INFO:     127.0.0.1:55967 - "GET /groups HTTP/1.1" 200 OK
+INFO:     127.0.0.1:55507 - "GET /devices HTTP/1.1" 200 OK
+INFO:     ('127.0.0.1', 53618) - "WebSocket /ws/admin?token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJhZG1pbiIsInJvbGUiOiJhZG1pbiIsInR5cCI6ImFkbWluIiwiaWF0IjoxNzg5OTI2NDc0LCJleHAiOjE3ODk5Njk2NzR9.-yV0U1WDR6EqqKNNzSHNog5itfeM5sspCDqsqVw9oiM" [accepted]
+INFO:     connection open
+INFO:     127.0.0.1:53619 - "GET /broadcasts?limit=30 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:53622 - "GET /zones HTTP/1.1" 200 OK
+INFO:     127.0.0.1:53623 - "GET /groups HTTP/1.1" 200 OK
+INFO:     connection closed
+INFO:     connection closed
+INFO:     127.0.0.1:49671 - "GET /content HTTP/1.1" 200 OK
+INFO:     127.0.0.1:53040 - "GET /zones HTTP/1.1" 200 OK
+INFO:     127.0.0.1:53041 - "GET /assignments HTTP/1.1" 200 OK
+INFO:     127.0.0.1:53039 - "GET /groups HTTP/1.1" 200 OK
+INFO:     127.0.0.1:49674 - "GET /content HTTP/1.1" 200 OK
+INFO:     127.0.0.1:62985 - "GET /zones HTTP/1.1" 200 OK
+INFO:     127.0.0.1:57569 - "GET /assignments HTTP/1.1" 200 OK
+INFO:     127.0.0.1:57570 - "GET /groups HTTP/1.1" 200 OK
+INFO:     ('127.0.0.1', 56049) - "WebSocket /ws/admin?token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJhZG1pbiIsInJvbGUiOiJhZG1pbiIsInR5cCI6ImFkbWluIiwiaWF0IjoxNzg5OTI2NDc0LCJleHAiOjE3ODk5Njk2NzR9.-yV0U1WDR6EqqKNNzSHNog5itfeM5sspCDqsqVw9oiM" [accepted]
+INFO:     connection open
+INFO:     127.0.0.1:55090 - "GET /cities HTTP/1.1" 200 OK
+INFO:     ('127.0.0.1', 55095) - "WebSocket /ws/admin?token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJhZG1pbiIsInJvbGUiOiJhZG1pbiIsInR5cCI6ImFkbWluIiwiaWF0IjoxNzg5OTI2NDc0LCJleHAiOjE3ODk5Njk2NzR9.-yV0U1WDR6EqqKNNzSHNog5itfeM5sspCDqsqVw9oiM" [accepted]
+INFO:     connection open
+INFO:     connection closed
+INFO:     127.0.0.1:55091 - "GET /devices HTTP/1.1" 200 OK
+INFO:     127.0.0.1:55097 - "GET /assignments HTTP/1.1" 200 OK
+INFO:     127.0.0.1:55096 - "GET /zones HTTP/1.1" 200 OK
+INFO:     127.0.0.1:55145 - "GET /cities HTTP/1.1" 200 OK
+INFO:     127.0.0.1:52148 - "GET /devices HTTP/1.1" 200 OK
+INFO:     127.0.0.1:50331 - "GET /zones HTTP/1.1" 200 OK
+INFO:     127.0.0.1:50328 - "GET /assignments HTTP/1.1" 200 OK
+INFO:     connection closed
+INFO:     127.0.0.1:54701 - "GET /content HTTP/1.1" 200 OK
+INFO:     127.0.0.1:55681 - "GET /content HTTP/1.1" 200 OK
+INFO:     ('127.0.0.1', 55330) - "WebSocket /ws/admin?token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJhZG1pbiIsInJvbGUiOiJhZG1pbiIsInR5cCI6ImFkbWluIiwiaWF0IjoxNzg5OTI2NDc0LCJleHAiOjE3ODk5Njk2NzR9.-yV0U1WDR6EqqKNNzSHNog5itfeM5sspCDqsqVw9oiM" [accepted]
+INFO:     connection open
+INFO:     connection closed
+INFO:     ('127.0.0.1', 50438) - "WebSocket /ws/admin?token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJhZG1pbiIsInJvbGUiOiJhZG1pbiIsInR5cCI6ImFkbWluIiwiaWF0IjoxNzg5OTI2NDc0LCJleHAiOjE3ODk5Njk2NzR9.-yV0U1WDR6EqqKNNzSHNog5itfeM5sspCDqsqVw9oiM" [accepted]
+INFO:     connection open
+INFO:     127.0.0.1:61479 - "GET /devices HTTP/1.1" 200 OK
+INFO:     127.0.0.1:61481 - "GET /settings/health HTTP/1.1" 200 OK
+INFO:     127.0.0.1:50435 - "GET /groups HTTP/1.1" 200 OK
+INFO:     127.0.0.1:61803 - "GET /devices HTTP/1.1" 200 OK
+INFO:     127.0.0.1:61806 - "GET /settings/health HTTP/1.1" 200 OK
+INFO:     127.0.0.1:61807 - "GET /groups HTTP/1.1" 200 OK
+INFO:     127.0.0.1:60246 - "GET /devices HTTP/1.1" 200 OK
+INFO:     127.0.0.1:64765 - "GET /devices HTTP/1.1" 200 OK
+INFO:     connection closed
+INFO:     ('127.0.0.1', 55054) - "WebSocket /ws/admin?token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJhZG1pbiIsInJvbGUiOiJhZG1pbiIsInR5cCI6ImFkbWluIiwiaWF0IjoxNzg5OTI2NDc0LCJleHAiOjE3ODk5Njk2NzR9.-yV0U1WDR6EqqKNNzSHNog5itfeM5sspCDqsqVw9oiM" [accepted]
+INFO:     connection open
+INFO:     127.0.0.1:50061 - "GET /settings/health HTTP/1.1" 200 OK
+INFO:     ('127.0.0.1', 59795) - "WebSocket /ws/admin?token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJhZG1pbiIsInJvbGUiOiJhZG1pbiIsInR5cCI6ImFkbWluIiwiaWF0IjoxNzg5OTI2NDc0LCJleHAiOjE3ODk5Njk2NzR9.-yV0U1WDR6EqqKNNzSHNog5itfeM5sspCDqsqVw9oiM" [accepted]
+INFO:     connection closed
+INFO:     connection open
+INFO:     127.0.0.1:59790 - "GET /zones HTTP/1.1" 200 OK
+INFO:     127.0.0.1:59794 - "GET /emergency HTTP/1.1" 200 OK
+INFO:     127.0.0.1:59796 - "GET /alerts HTTP/1.1" 200 OK
+INFO:     127.0.0.1:59793 - "GET /monitoring/timeline HTTP/1.1" 200 OK
+INFO:     127.0.0.1:59792 - "GET /monitoring/logs?limit=8 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:51826 - "GET /devices HTTP/1.1" 200 OK
+INFO:     127.0.0.1:61560 - "GET /settings/health HTTP/1.1" 200 OK
+INFO:     127.0.0.1:54769 - "GET /zones HTTP/1.1" 200 OK
+INFO:     127.0.0.1:59283 - "GET /emergency HTTP/1.1" 200 OK
+INFO:     127.0.0.1:59284 - "GET /alerts HTTP/1.1" 200 OK
+INFO:     127.0.0.1:59288 - "GET /monitoring/logs?limit=8 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:59290 - "GET /devices HTTP/1.1" 200 OK
+INFO:     127.0.0.1:59287 - "GET /monitoring/timeline HTTP/1.1" 200 OK
+INFO:     127.0.0.1:64450 - "GET /devices HTTP/1.1" 200 OK
+INFO:     127.0.0.1:64448 - "GET /monitoring/timeline HTTP/1.1" 200 OK
+INFO:     127.0.0.1:56666 - "GET /alerts HTTP/1.1" 200 OK
+INFO:     127.0.0.1:49672 - "GET /monitoring/timeline HTTP/1.1" 401 Unauthorized
+INFO:     127.0.0.1:49675 - "GET /devices HTTP/1.1" 401 Unauthorized
+INFO:     127.0.0.1:53115 - "GET /auth/config HTTP/1.1" 200 OK
+INFO:     127.0.0.1:53117 - "GET /auth/config HTTP/1.1" 200 OK
+INFO:     127.0.0.1:65326 - "POST /auth/login HTTP/1.1" 200 OK
+INFO:     ('127.0.0.1', 56870) - "WebSocket /ws/admin?token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJhZG1pbiIsInJvbGUiOiJhZG1pbiIsInR5cCI6ImFkbWluIiwiaWF0IjoxNzg5OTI0MzEyLCJleHAiOjE3ODk5Njc1MTJ9.2vSGhbTJZnNEl8Lb_PkdG86PDuz2itC1SABrkcj-CgM" [accepted]
+INFO:     connection open
+INFO:     connection closed
+INFO:     127.0.0.1:56872 - "GET /alerts HTTP/1.1" 200 OK
+INFO:     ('127.0.0.1', 51074) - "WebSocket /ws/admin?token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJhZG1pbiIsInJvbGUiOiJhZG1pbiIsInR5cCI6ImFkbWluIiwiaWF0IjoxNzg5OTI0MzEyLCJleHAiOjE3ODk5Njc1MTJ9.2vSGhbTJZnNEl8Lb_PkdG86PDuz2itC1SABrkcj-CgM" [accepted]
+INFO:     connection open
+INFO:     127.0.0.1:51076 - "GET /alerts HTTP/1.1" 200 OK
+INFO:     ('127.0.0.1', 60096) - "WebSocket /ws/admin?token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJhZG1pbiIsInJvbGUiOiJhZG1pbiIsInR5cCI6ImFkbWluIiwiaWF0IjoxNzg5OTI0MzEyLCJleHAiOjE3ODk5Njc1MTJ9.2vSGhbTJZnNEl8Lb_PkdG86PDuz2itC1SABrkcj-CgM" [accepted]
+INFO:     connection open
+INFO:     ('127.0.0.1', 64931) - "WebSocket /ws/admin?token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJhZG1pbiIsInJvbGUiOiJhZG1pbiIsInR5cCI6ImFkbWluIiwiaWF0IjoxNzg5OTI0MzEyLCJleHAiOjE3ODk5Njc1MTJ9.2vSGhbTJZnNEl8Lb_PkdG86PDuz2itC1SABrkcj-CgM" [accepted]
+INFO:     connection open
+INFO:     connection closed
+INFO:     127.0.0.1:60632 - "GET /settings/health HTTP/1.1" 200 OK
+INFO:     127.0.0.1:60634 - "GET /monitoring/logs?limit=8 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:60633 - "GET /zones HTTP/1.1" 200 OK
+INFO:     127.0.0.1:60638 - "GET /monitoring/timeline HTTP/1.1" 200 OK
+INFO:     127.0.0.1:60640 - "GET /devices HTTP/1.1" 200 OK
+INFO:     127.0.0.1:60639 - "GET /emergency HTTP/1.1" 200 OK
+INFO:     127.0.0.1:62319 - "GET /alerts HTTP/1.1" 200 OK
+INFO:     127.0.0.1:50152 - "GET /settings/health HTTP/1.1" 200 OK
+INFO:     127.0.0.1:50154 - "GET /monitoring/logs?limit=8 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:63806 - "GET /zones HTTP/1.1" 200 OK
+INFO:     127.0.0.1:63808 - "GET /devices HTTP/1.1" 200 OK
+INFO:     127.0.0.1:50256 - "GET /emergency HTTP/1.1" 200 OK
+INFO:     127.0.0.1:60887 - "GET /alerts HTTP/1.1" 200 OK
+INFO:     127.0.0.1:63807 - "GET /monitoring/timeline HTTP/1.1" 200 OK
+INFO:     connection closed
+INFO:     ('127.0.0.1', 50278) - "WebSocket /ws/admin?token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJhZG1pbiIsInJvbGUiOiJhZG1pbiIsInR5cCI6ImFkbWluIiwiaWF0IjoxNzg5OTI0MzEyLCJleHAiOjE3ODk5Njc1MTJ9.2vSGhbTJZnNEl8Lb_PkdG86PDuz2itC1SABrkcj-CgM" [accepted]
+INFO:     connection open
+INFO:     connection closed
+INFO:     ('127.0.0.1', 59873) - "WebSocket /ws/admin?token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJhZG1pbiIsInJvbGUiOiJhZG1pbiIsInR5cCI6ImFkbWluIiwiaWF0IjoxNzg5OTI0MzEyLCJleHAiOjE3ODk5Njc1MTJ9.2vSGhbTJZnNEl8Lb_PkdG86PDuz2itC1SABrkcj-CgM" [accepted]
+INFO:     connection open
+INFO:     127.0.0.1:50282 - "GET /settings/health HTTP/1.1" 200 OK
+INFO:     127.0.0.1:50279 - "GET /devices HTTP/1.1" 200 OK
+INFO:     127.0.0.1:50283 - "GET /groups HTTP/1.1" 200 OK
+INFO:     127.0.0.1:61414 - "GET /settings/health HTTP/1.1" 200 OK
+INFO:     127.0.0.1:53977 - "GET /devices HTTP/1.1" 200 OK
+INFO:     127.0.0.1:53979 - "GET /groups HTTP/1.1" 200 OK
+INFO:     127.0.0.1:54435 - "GET /devices HTTP/1.1" 200 OK
+INFO:     127.0.0.1:63512 - "GET /devices HTTP/1.1" 200 OK
+INFO:     ('127.0.0.1', 63303) - "WebSocket /ws/admin?token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJhZG1pbiIsInJvbGUiOiJhZG1pbiIsInR5cCI6ImFkbWluIiwiaWF0IjoxNzg5OTI0MzEyLCJleHAiOjE3ODk5Njc1MTJ9.2vSGhbTJZnNEl8Lb_PkdG86PDuz2itC1SABrkcj-CgM" [accepted]
+INFO:     connection open
+INFO:     connection closed
+INFO:     ('127.0.0.1', 57874) - "WebSocket /ws/admin?token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJhZG1pbiIsInJvbGUiOiJhZG1pbiIsInR5cCI6ImFkbWluIiwiaWF0IjoxNzg5OTI0MzEyLCJleHAiOjE3ODk5Njc1MTJ9.2vSGhbTJZnNEl8Lb_PkdG86PDuz2itC1SABrkcj-CgM" [accepted]
+INFO:     connection open
+INFO:     127.0.0.1:64703 - "GET /devices/DEV-001/logs?limit=15 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:64704 - "GET /settings/health HTTP/1.1" 200 OK
+INFO:     127.0.0.1:64701 - "GET /devices/DEV-001 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:56010 - "GET /devices/DEV-001/logs?limit=15 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:64479 - "GET /settings/health HTTP/1.1" 200 OK
+INFO:     127.0.0.1:64480 - "GET /devices/DEV-001 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:50490 - "POST /devices/DEV-001/rotate-token HTTP/1.1" 200 OK
+INFO:     127.0.0.1:59142 - "GET /devices HTTP/1.1" 200 OK
+INFO:     127.0.0.1:59144 - "GET /groups HTTP/1.1" 200 OK
+INFO:     127.0.0.1:61638 - "GET /alerts HTTP/1.1" 200 OK
+INFO:     127.0.0.1:65440 - "GET /alerts HTTP/1.1" 200 OK
+INFO:     127.0.0.1:64898 - "DELETE /devices/DEV-001 HTTP/1.1" 200 OK
+INFO:     connection closed
+INFO:     127.0.0.1:56246 - "GET /devices HTTP/1.1" 200 OK
+INFO:     127.0.0.1:56248 - "GET /groups HTTP/1.1" 200 OK
+INFO:     connection closed
+INFO:     ('127.0.0.1', 57054) - "WebSocket /ws/admin?token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJhZG1pbiIsInJvbGUiOiJhZG1pbiIsInR5cCI6ImFkbWluIiwiaWF0IjoxNzg5OTI0MzEyLCJleHAiOjE3ODk5Njc1MTJ9.2vSGhbTJZnNEl8Lb_PkdG86PDuz2itC1SABrkcj-CgM" [accepted]
+INFO:     connection open
+INFO:     connection closed
+INFO:     ('127.0.0.1', 57953) - "WebSocket /ws/admin?token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJhZG1pbiIsInJvbGUiOiJhZG1pbiIsInR5cCI6ImFkbWluIiwiaWF0IjoxNzg5OTI0MzEyLCJleHAiOjE3ODk5Njc1MTJ9.2vSGhbTJZnNEl8Lb_PkdG86PDuz2itC1SABrkcj-CgM" [accepted]
+INFO:     connection open
+INFO:     127.0.0.1:57957 - "GET /assignments HTTP/1.1" 200 OK
+INFO:     127.0.0.1:57955 - "GET /cities HTTP/1.1" 200 OK
+INFO:     127.0.0.1:58128 - "GET /devices HTTP/1.1" 200 OK
+INFO:     127.0.0.1:58131 - "GET /zones HTTP/1.1" 200 OK
+INFO:     127.0.0.1:57357 - "GET /cities HTTP/1.1" 200 OK
+INFO:     127.0.0.1:57356 - "GET /assignments HTTP/1.1" 200 OK
+INFO:     127.0.0.1:52268 - "GET /devices HTTP/1.1" 200 OK
+INFO:     127.0.0.1:52269 - "GET /zones HTTP/1.1" 200 OK
+INFO:     connection closed
+INFO:     127.0.0.1:62423 - "GET /zones HTTP/1.1" 200 OK
+INFO:     127.0.0.1:62427 - "GET /assignments HTTP/1.1" 200 OK
+INFO:     127.0.0.1:62422 - "GET /content HTTP/1.1" 200 OK
+INFO:     127.0.0.1:62426 - "GET /groups HTTP/1.1" 200 OK
+INFO:     127.0.0.1:53033 - "GET /zones HTTP/1.1" 200 OK
+INFO:     127.0.0.1:61136 - "GET /assignments HTTP/1.1" 200 OK
+INFO:     127.0.0.1:61139 - "GET /content HTTP/1.1" 200 OK
+INFO:     127.0.0.1:61140 - "GET /groups HTTP/1.1" 200 OK
+INFO:     ('127.0.0.1', 51842) - "WebSocket /ws/admin?token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJhZG1pbiIsInJvbGUiOiJhZG1pbiIsInR5cCI6ImFkbWluIiwiaWF0IjoxNzg5OTI0MzEyLCJleHAiOjE3ODk5Njc1MTJ9.2vSGhbTJZnNEl8Lb_PkdG86PDuz2itC1SABrkcj-CgM" [accepted]
+INFO:     connection open
+INFO:     127.0.0.1:58813 - "GET /broadcasts?limit=30 HTTP/1.1" 200 OK
+INFO:     ('127.0.0.1', 61843) - "WebSocket /ws/admin?token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJhZG1pbiIsInJvbGUiOiJhZG1pbiIsInR5cCI6ImFkbWluIiwiaWF0IjoxNzg5OTI0MzEyLCJleHAiOjE3ODk5Njc1MTJ9.2vSGhbTJZnNEl8Lb_PkdG86PDuz2itC1SABrkcj-CgM" [accepted]
+INFO:     connection open
+INFO:     connection closed
+INFO:     connection closed
+INFO:     127.0.0.1:53991 - "GET /zones HTTP/1.1" 200 OK
+INFO:     127.0.0.1:53992 - "GET /groups HTTP/1.1" 200 OK
+INFO:     127.0.0.1:53989 - "GET /devices HTTP/1.1" 200 OK
+INFO:     ('127.0.0.1', 57194) - "WebSocket /ws/admin?token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJhZG1pbiIsInJvbGUiOiJhZG1pbiIsInR5cCI6ImFkbWluIiwiaWF0IjoxNzg5OTI0MzEyLCJleHAiOjE3ODk5Njc1MTJ9.2vSGhbTJZnNEl8Lb_PkdG86PDuz2itC1SABrkcj-CgM" [accepted]
+INFO:     connection open
+INFO:     127.0.0.1:50873 - "GET /broadcasts?limit=30 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:61865 - "GET /zones HTTP/1.1" 200 OK
+INFO:     ('127.0.0.1', 60826) - "WebSocket /ws/admin?token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJhZG1pbiIsInJvbGUiOiJhZG1pbiIsInR5cCI6ImFkbWluIiwiaWF0IjoxNzg5OTI0MzEyLCJleHAiOjE3ODk5Njc1MTJ9.2vSGhbTJZnNEl8Lb_PkdG86PDuz2itC1SABrkcj-CgM" [accepted]
+INFO:     connection open
+INFO:     127.0.0.1:60824 - "GET /devices HTTP/1.1" 200 OK
+INFO:     127.0.0.1:60823 - "GET /groups HTTP/1.1" 200 OK
+INFO:     connection closed
+INFO:     connection closed
+INFO:     127.0.0.1:65274 - "GET /emergency HTTP/1.1" 200 OK
+INFO:     127.0.0.1:65278 - "GET /zones HTTP/1.1" 200 OK
+INFO:     127.0.0.1:65277 - "GET /content HTTP/1.1" 200 OK
+INFO:     127.0.0.1:65280 - "GET /groups HTTP/1.1" 200 OK
+INFO:     127.0.0.1:58044 - "GET /emergency HTTP/1.1" 200 OK
+INFO:     127.0.0.1:50776 - "GET /zones HTTP/1.1" 200 OK
+INFO:     127.0.0.1:52314 - "GET /content HTTP/1.1" 200 OK
+INFO:     127.0.0.1:52312 - "GET /groups HTTP/1.1" 200 OK
+INFO:     ('127.0.0.1', 51660) - "WebSocket /ws/admin?token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJhZG1pbiIsInJvbGUiOiJhZG1pbiIsInR5cCI6ImFkbWluIiwiaWF0IjoxNzg5OTI0MzEyLCJleHAiOjE3ODk5Njc1MTJ9.2vSGhbTJZnNEl8Lb_PkdG86PDuz2itC1SABrkcj-CgM" [accepted]
+INFO:     connection open
+INFO:     connection closed
+INFO:     ('127.0.0.1', 53443) - "WebSocket /ws/admin?token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJhZG1pbiIsInJvbGUiOiJhZG1pbiIsInR5cCI6ImFkbWluIiwiaWF0IjoxNzg5OTI0MzEyLCJleHAiOjE3ODk5Njc1MTJ9.2vSGhbTJZnNEl8Lb_PkdG86PDuz2itC1SABrkcj-CgM" [accepted]
+INFO:     connection open
+INFO:     127.0.0.1:53440 - "GET /assignments HTTP/1.1" 200 OK
+INFO:     127.0.0.1:53439 - "GET /zones HTTP/1.1" 200 OK
+INFO:     127.0.0.1:53438 - "GET /devices HTTP/1.1" 200 OK
+INFO:     127.0.0.1:53437 - "GET /cities HTTP/1.1" 200 OK
+INFO:     127.0.0.1:62322 - "GET /zones HTTP/1.1" 200 OK
+INFO:     127.0.0.1:56949 - "GET /assignments HTTP/1.1" 200 OK
+INFO:     127.0.0.1:62549 - "GET /cities HTTP/1.1" 200 OK
+INFO:     127.0.0.1:62550 - "GET /devices HTTP/1.1" 200 OK
+INFO:     connection closed
+INFO:     ('127.0.0.1', 57245) - "WebSocket /ws/admin?token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJhZG1pbiIsInJvbGUiOiJhZG1pbiIsInR5cCI6ImFkbWluIiwiaWF0IjoxNzg5OTI0MzEyLCJleHAiOjE3ODk5Njc1MTJ9.2vSGhbTJZnNEl8Lb_PkdG86PDuz2itC1SABrkcj-CgM" [accepted]
+INFO:     connection open
+INFO:     connection closed
+INFO:     ('127.0.0.1', 59352) - "WebSocket /ws/admin?token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJhZG1pbiIsInJvbGUiOiJhZG1pbiIsInR5cCI6ImFkbWluIiwiaWF0IjoxNzg5OTI0MzEyLCJleHAiOjE3ODk5Njc1MTJ9.2vSGhbTJZnNEl8Lb_PkdG86PDuz2itC1SABrkcj-CgM" [accepted]
+INFO:     connection open
+INFO:     127.0.0.1:49950 - "GET /broadcasts?limit=30 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:49951 - "GET /zones HTTP/1.1" 200 OK
+INFO:     127.0.0.1:49949 - "GET /devices HTTP/1.1" 200 OK
+INFO:     127.0.0.1:49952 - "GET /groups HTTP/1.1" 200 OK
+INFO:     ('127.0.0.1', 53630) - "WebSocket /ws/admin?token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJhZG1pbiIsInJvbGUiOiJhZG1pbiIsInR5cCI6ImFkbWluIiwiaWF0IjoxNzg5OTI0MzEyLCJleHAiOjE3ODk5Njc1MTJ9.2vSGhbTJZnNEl8Lb_PkdG86PDuz2itC1SABrkcj-CgM" [accepted]
+INFO:     connection open
+INFO:     127.0.0.1:53338 - "GET /broadcasts?limit=30 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:53341 - "GET /zones HTTP/1.1" 200 OK
+INFO:     127.0.0.1:53343 - "GET /devices HTTP/1.1" 200 OK
+INFO:     127.0.0.1:53344 - "GET /groups HTTP/1.1" 200 OK
+INFO:     connection closed
+INFO:     connection closed
+INFO:     127.0.0.1:51158 - "GET /alerts HTTP/1.1" 200 OK
+INFO:     ('127.0.0.1', 56865) - "WebSocket /ws/admin?token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJhZG1pbiIsInJvbGUiOiJhZG1pbiIsInR5cCI6ImFkbWluIiwiaWF0IjoxNzg5OTI0MzEyLCJleHAiOjE3ODk5Njc1MTJ9.2vSGhbTJZnNEl8Lb_PkdG86PDuz2itC1SABrkcj-CgM" [accepted]
+INFO:     connection open
+INFO:     connection closed
+INFO:     127.0.0.1:52410 - "GET /settings/health HTTP/1.1" 200 OK
+INFO:     127.0.0.1:52409 - "GET /alerts?state=all&limit=25 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:52414 - "GET /monitoring/analytics HTTP/1.1" 200 OK
+INFO:     ('127.0.0.1', 49978) - "WebSocket /ws/admin?token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJhZG1pbiIsInJvbGUiOiJhZG1pbiIsInR5cCI6ImFkbWluIiwiaWF0IjoxNzg5OTI0MzEyLCJleHAiOjE3ODk5Njc1MTJ9.2vSGhbTJZnNEl8Lb_PkdG86PDuz2itC1SABrkcj-CgM" [accepted]
+INFO:     connection open
+INFO:     127.0.0.1:52412 - "GET /monitoring/logs?limit=40 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:52415 - "GET /devices HTTP/1.1" 200 OK
+INFO:     127.0.0.1:58884 - "GET /settings/health HTTP/1.1" 200 OK
+INFO:     127.0.0.1:61909 - "GET /monitoring/logs?limit=40 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:61908 - "GET /devices HTTP/1.1" 200 OK
+INFO:     127.0.0.1:56677 - "GET /alerts?state=all&limit=25 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:56679 - "GET /monitoring/analytics HTTP/1.1" 200 OK
+INFO:     connection closed
+INFO:     127.0.0.1:59656 - "GET /users HTTP/1.1" 200 OK
+INFO:     127.0.0.1:58108 - "GET /users HTTP/1.1" 200 OK
+INFO:     127.0.0.1:58171 - "GET /emergency HTTP/1.1" 200 OK
+INFO:     127.0.0.1:58175 - "GET /zones HTTP/1.1" 200 OK
+INFO:     127.0.0.1:58176 - "GET /groups HTTP/1.1" 200 OK
+INFO:     127.0.0.1:58174 - "GET /content HTTP/1.1" 200 OK
+INFO:     127.0.0.1:60124 - "GET /emergency HTTP/1.1" 200 OK
+INFO:     127.0.0.1:58954 - "GET /zones HTTP/1.1" 200 OK
+INFO:     127.0.0.1:58953 - "GET /groups HTTP/1.1" 200 OK
+INFO:     127.0.0.1:58956 - "GET /content HTTP/1.1" 200 OK
+INFO:     ('127.0.0.1', 65374) - "WebSocket /ws/admin?token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJhZG1pbiIsInJvbGUiOiJhZG1pbiIsInR5cCI6ImFkbWluIiwiaWF0IjoxNzg5OTI0MzEyLCJleHAiOjE3ODk5Njc1MTJ9.2vSGhbTJZnNEl8Lb_PkdG86PDuz2itC1SABrkcj-CgM" [accepted]
+INFO:     connection open
+INFO:     connection closed
+INFO:     127.0.0.1:61095 - "GET /settings/health HTTP/1.1" 200 OK
+INFO:     ('127.0.0.1', 61961) - "WebSocket /ws/admin?token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJhZG1pbiIsInJvbGUiOiJhZG1pbiIsInR5cCI6ImFkbWluIiwiaWF0IjoxNzg5OTI0MzEyLCJleHAiOjE3ODk5Njc1MTJ9.2vSGhbTJZnNEl8Lb_PkdG86PDuz2itC1SABrkcj-CgM" [accepted]
+INFO:     connection open
+INFO:     127.0.0.1:61099 - "GET /alerts?state=all&limit=25 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:61956 - "GET /monitoring/logs?limit=40 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:61958 - "GET /devices HTTP/1.1" 200 OK
+INFO:     127.0.0.1:63366 - "GET /settings/health HTTP/1.1" 200 OK
+INFO:     127.0.0.1:61957 - "GET /monitoring/analytics HTTP/1.1" 200 OK
+INFO:     127.0.0.1:56910 - "GET /alerts?state=all&limit=25 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:58285 - "GET /monitoring/logs?limit=40 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:51648 - "GET /devices HTTP/1.1" 200 OK
+INFO:     127.0.0.1:51650 - "GET /monitoring/analytics HTTP/1.1" 200 OK
+INFO:     connection closed
+INFO:     127.0.0.1:57006 - "GET /emergency HTTP/1.1" 200 OK
+INFO:     127.0.0.1:57008 - "GET /zones HTTP/1.1" 200 OK
+INFO:     127.0.0.1:57007 - "GET /content HTTP/1.1" 200 OK
+INFO:     127.0.0.1:57010 - "GET /groups HTTP/1.1" 200 OK
+INFO:     127.0.0.1:63180 - "GET /emergency HTTP/1.1" 200 OK
+INFO:     127.0.0.1:50072 - "GET /content HTTP/1.1" 200 OK
+INFO:     127.0.0.1:50075 - "GET /zones HTTP/1.1" 200 OK
+INFO:     127.0.0.1:50076 - "GET /groups HTTP/1.1" 200 OK
+INFO:     127.0.0.1:52334 - "POST /emergency HTTP/1.1" 201 Created
+INFO:     127.0.0.1:53224 - "GET /emergency HTTP/1.1" 200 OK
+INFO:     127.0.0.1:58846 - "DELETE /emergency HTTP/1.1" 200 OK
+INFO:     127.0.0.1:52981 - "GET /emergency HTTP/1.1" 200 OK
+INFO:     connection closed
+INFO:     connection closed
+INFO:     connection closed
+INFO:     127.0.0.1:61814 - "GET /alerts HTTP/1.1" 200 OK
+INFO:     ('127.0.0.1', 58017) - "WebSocket /ws/admin?token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJhZG1pbiIsInJvbGUiOiJhZG1pbiIsInR5cCI6ImFkbWluIiwiaWF0IjoxNzg5OTI0MzEyLCJleHAiOjE3ODk5Njc1MTJ9.2vSGhbTJZnNEl8Lb_PkdG86PDuz2itC1SABrkcj-CgM" [accepted]
+INFO:     connection open
+INFO:     127.0.0.1:58018 - "GET /alerts HTTP/1.1" 200 OK
+INFO:     127.0.0.1:55283 - "GET /emergency HTTP/1.1" 200 OK
+INFO:     127.0.0.1:55285 - "GET /content HTTP/1.1" 200 OK
+INFO:     127.0.0.1:55287 - "GET /zones HTTP/1.1" 200 OK
+INFO:     127.0.0.1:55288 - "GET /groups HTTP/1.1" 200 OK
+INFO:     127.0.0.1:53252 - "GET /emergency HTTP/1.1" 200 OK
+INFO:     127.0.0.1:51702 - "GET /content HTTP/1.1" 200 OK
+INFO:     127.0.0.1:51705 - "GET /zones HTTP/1.1" 200 OK
+INFO:     127.0.0.1:51706 - "GET /groups HTTP/1.1" 200 OK
+INFO:     connection closed
+INFO:     ('127.0.0.1', 49671) - "WebSocket /ws/admin?token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJhZG1pbiIsInJvbGUiOiJhZG1pbiIsInR5cCI6ImFkbWluIiwiaWF0IjoxNzg5OTI0MzEyLCJleHAiOjE3ODk5Njc1MTJ9.2vSGhbTJZnNEl8Lb_PkdG86PDuz2itC1SABrkcj-CgM" [accepted]
+INFO:     connection open
+INFO:     connection closed
+INFO:     127.0.0.1:53870 - "GET /auth/config HTTP/1.1" 200 OK
+INFO:     127.0.0.1:53872 - "GET /auth/config HTTP/1.1" 200 OK
+INFO:     ('127.0.0.1', 61471) - "WebSocket /ws/admin?token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJhZG1pbiIsInJvbGUiOiJhZG1pbiIsInR5cCI6ImFkbWluIiwiaWF0IjoxNzg5OTI0MzEyLCJleHAiOjE3ODk5Njc1MTJ9.2vSGhbTJZnNEl8Lb_PkdG86PDuz2itC1SABrkcj-CgM" [accepted]
+INFO:     connection open
+INFO:     127.0.0.1:61474 - "GET /alerts HTTP/1.1" 200 OK
+INFO:     127.0.0.1:61476 - "GET /alerts HTTP/1.1" 200 OK
+INFO:     127.0.0.1:55908 - "GET /emergency HTTP/1.1" 200 OK
+INFO:     127.0.0.1:55914 - "GET /zones HTTP/1.1" 200 OK
+INFO:     127.0.0.1:55913 - "GET /content HTTP/1.1" 200 OK
+INFO:     127.0.0.1:55915 - "GET /groups HTTP/1.1" 200 OK
+INFO:     127.0.0.1:57566 - "GET /emergency HTTP/1.1" 200 OK
+INFO:     127.0.0.1:49159 - "GET /zones HTTP/1.1" 200 OK
+INFO:     127.0.0.1:51737 - "GET /content HTTP/1.1" 200 OK
+INFO:     127.0.0.1:62398 - "GET /groups HTTP/1.1" 200 OK
+INFO:     connection closed
+INFO:     ('127.0.0.1', 59409) - "WebSocket /ws/admin?token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJhZG1pbiIsInJvbGUiOiJhZG1pbiIsInR5cCI6ImFkbWluIiwiaWF0IjoxNzg5OTI0MzEyLCJleHAiOjE3ODk5Njc1MTJ9.2vSGhbTJZnNEl8Lb_PkdG86PDuz2itC1SABrkcj-CgM" [accepted]
+INFO:     connection open
+INFO:     127.0.0.1:63693 - "GET /alerts HTTP/1.1" 200 OK
+INFO:     connection closed
+INFO:     127.0.0.1:62957 - "GET /auth/config HTTP/1.1" 200 OK
+INFO:     127.0.0.1:62959 - "GET /auth/config HTTP/1.1" 200 OK
+INFO:     ('127.0.0.1', 55259) - "WebSocket /ws/admin?token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJhZG1pbiIsInJvbGUiOiJhZG1pbiIsInR5cCI6ImFkbWluIiwiaWF0IjoxNzg5OTI0MzEyLCJleHAiOjE3ODk5Njc1MTJ9.2vSGhbTJZnNEl8Lb_PkdG86PDuz2itC1SABrkcj-CgM" [accepted]
+INFO:     connection open
+INFO:     connection closed
+INFO:     127.0.0.1:55261 - "GET /alerts HTTP/1.1" 200 OK
+INFO:     ('127.0.0.1', 57547) - "WebSocket /ws/admin?token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJhZG1pbiIsInJvbGUiOiJhZG1pbiIsInR5cCI6ImFkbWluIiwiaWF0IjoxNzg5OTI0MzEyLCJleHAiOjE3ODk5Njc1MTJ9.2vSGhbTJZnNEl8Lb_PkdG86PDuz2itC1SABrkcj-CgM" [accepted]
+INFO:     connection open
+INFO:     127.0.0.1:57549 - "GET /alerts HTTP/1.1" 200 OK
+INFO:     127.0.0.1:57553 - "GET /content HTTP/1.1" 200 OK
+INFO:     127.0.0.1:57552 - "GET /emergency HTTP/1.1" 200 OK
+INFO:     127.0.0.1:56255 - "GET /groups HTTP/1.1" 200 OK
+INFO:     127.0.0.1:56253 - "GET /zones HTTP/1.1" 200 OK
+INFO:     127.0.0.1:51115 - "GET /content HTTP/1.1" 200 OK
+INFO:     127.0.0.1:49874 - "GET /zones HTTP/1.1" 200 OK
+INFO:     127.0.0.1:49873 - "GET /emergency HTTP/1.1" 200 OK
+INFO:     127.0.0.1:49872 - "GET /groups HTTP/1.1" 200 OK
+INFO:     127.0.0.1:51598 - "GET /alerts HTTP/1.1" 200 OK
+INFO:     127.0.0.1:63700 - "GET /alerts HTTP/1.1" 200 OK
+INFO:     127.0.0.1:52285 - "GET /alerts HTTP/1.1" 200 OK
+INFO:     127.0.0.1:51147 - "GET /alerts HTTP/1.1" 200 OK
+INFO:     127.0.0.1:63652 - "GET /alerts HTTP/1.1" 200 OK
+INFO:     127.0.0.1:59388 - "GET /alerts HTTP/1.1" 200 OK
+INFO:     127.0.0.1:61902 - "GET /alerts HTTP/1.1" 200 OK
+INFO:     127.0.0.1:60855 - "GET /alerts HTTP/1.1" 200 OK
+INFO:     127.0.0.1:50296 - "GET /alerts HTTP/1.1" 200 OK
+INFO:     127.0.0.1:64041 - "GET /alerts HTTP/1.1" 200 OK
+INFO:     127.0.0.1:53687 - "GET /alerts HTTP/1.1" 200 OK
+INFO:     127.0.0.1:54085 - "GET /alerts HTTP/1.1" 200 OK
+INFO:     127.0.0.1:55377 - "GET /alerts HTTP/1.1" 200 OK
+INFO:     127.0.0.1:50517 - "GET /alerts HTTP/1.1" 200 OK
+INFO:     127.0.0.1:57843 - "GET /alerts HTTP/1.1" 200 OK
+INFO:     127.0.0.1:65263 - "GET /alerts HTTP/1.1" 200 OK
+INFO:     127.0.0.1:62865 - "GET /alerts HTTP/1.1" 200 OK
+INFO:     127.0.0.1:64408 - "GET /alerts HTTP/1.1" 200 OK
+INFO:     127.0.0.1:49851 - "GET /alerts HTTP/1.1" 200 OK
+INFO:     127.0.0.1:59670 - "GET /alerts HTTP/1.1" 200 OK
+INFO:     connection closed
+INFO:     127.0.0.1:49773 - "GET /auth/config HTTP/1.1" 200 OK
+INFO:     127.0.0.1:61889 - "GET /auth/config HTTP/1.1" 200 OK
+INFO:     127.0.0.1:49827 - "GET /auth/config HTTP/1.1" 200 OK
+INFO:     127.0.0.1:65397 - "GET /auth/config HTTP/1.1" 200 OK
+INFO:     127.0.0.1:53228 - "GET /auth/config HTTP/1.1" 200 OK
+INFO:     127.0.0.1:53231 - "GET /auth/config HTTP/1.1" 200 OK

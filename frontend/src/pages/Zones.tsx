@@ -1,8 +1,7 @@
 import { useCallback, useEffect, useState } from 'react'
 import { api, errMsg, isAdmin } from '../services/api'
-import type { Assignment, Zone } from '../types'
+import type { Zone } from '../types'
 import { useDevices } from '../hooks/useDevices'
-import AssignmentForm from '../components/AssignmentForm'
 import MapView from '../components/MapView'
 import { CityPicker } from '../components/zones/CityPicker'
 import { Badge, Button, Card, Empty, ErrorNote, Field, inputCls, PageHeader } from '../components/ui'
@@ -17,7 +16,6 @@ export default function Zones() {
   const [zones, setZones] = useState<Zone[]>([])
   const { devices: deviceList } = useDevices()
   const devices = deviceList ?? []
-  const [assignments, setAssignments] = useState<Assignment[]>([])
   const [selected, setSelected] = useState<number | null>(null)
   const [mode, setMode] = useState<'none' | 'polygon' | 'circle'>('none')
   const [draft, setDraft] = useState<[number, number][]>([])
@@ -29,7 +27,6 @@ export default function Zones() {
 
   const load = useCallback(() => {
     api.get('/zones').then((r) => setZones(r.data))
-    api.get('/assignments').then((r) => setAssignments(r.data))
   }, [])
   useEffect(() => { load() }, [load])
 
@@ -45,8 +42,6 @@ export default function Zones() {
       cancel(); setForm({ ...form, name: '' }); load(); setSelected(data.id)
     } catch (e) { setErr(errMsg(e)) }
   }
-  const sel = zones.find((z) => z.id === selected)
-  const zoneAssignments = assignments.filter((a) => a.zone_id === selected)
 
   return (
     <div className="stagger space-y-6">
@@ -98,22 +93,6 @@ export default function Zones() {
             </ul>
             {!zones.length && <Empty>No zones — draw one on the map</Empty>}
           </Card>
-          {sel && (
-            <Card title={`Content for ${sel.name}`}>
-              <ul className="mb-3 space-y-1 text-sm">
-                {zoneAssignments.map((a) => (
-                  <li key={a.id} className="flex items-center gap-2">
-                    <span className={a.active ? '' : 'text-ink-400 line-through'}>{a.content_name}</span>
-                    {a.start_time && <Badge tone="blue">{a.start_time}–{a.end_time}</Badge>}<Badge tone="gray">P{a.priority}</Badge>
-                    {a.is_emergency && <Badge tone="red">emergency</Badge>}
-                    {admin && <button className="ml-auto text-ink-400 hover:text-red-600" onClick={async () => { await api.delete(`/assignments/${a.id}`); load() }}>✕</button>}
-                  </li>
-                ))}
-                {!zoneAssignments.length && <li className="text-ink-400">Nothing assigned — devices here get default content</li>}
-              </ul>
-              {admin && <AssignmentForm zoneId={sel.id} lockZone onDone={load} />}
-            </Card>
-          )}
         </div>
       </div>
     </div>

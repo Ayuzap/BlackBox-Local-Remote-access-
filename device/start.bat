@@ -2,6 +2,8 @@
 rem Display-laptop launcher (Windows). First run asks 3 questions and saves them to .env.
 rem   start.bat            start the display agent
 rem   start.bat --reset    forget the saved answers and ask again
+rem   start.bat URL [DEVICE_ID TOKEN [PLACE|moving]]   one line, no questions (overwrites .env)
+rem     e.g. start.bat https://name.pinggy.net/api DEV-002 A1B2-C3D4-E5F6 delhi
 setlocal
 cd /d "%~dp0"
 
@@ -17,6 +19,8 @@ if /i "%~1"=="--reset" (
   if exist .cache\identity.json del .cache\identity.json
   if exist .cache\discovery_secret del .cache\discovery_secret
 )
+set "A1=%~1"
+if /i "%A1:~0,4%"=="http" goto from_args
 if exist .env goto have_env
 
 echo First-time setup - the presenter gives you the first three values.
@@ -35,6 +39,15 @@ set /p MOVES=Should this display MOVE along a route? (y/N):
 if /i "%MOVES%"=="y" goto write_moving
 set /p PLACE=Which place is it in? (chandigarh, delhi, jaipur, mumbai, ahmedabad) [delhi]: 
 if "%PLACE%"=="" set PLACE=delhi
+goto write_fixed
+:from_args
+set "SERVER_URL=%~1"
+set "DEVICE_ID=%~2"
+set "REGISTRATION_TOKEN=%~3"
+set "PLACE=%~4"
+if "%PLACE%"=="" set PLACE=delhi
+if /i "%PLACE%"=="moving" goto write_moving
+:write_fixed
 (
   echo SERVER_URL=%SERVER_URL%
   echo DEVICE_ID=%DEVICE_ID%
